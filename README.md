@@ -74,6 +74,40 @@ Bu sistemi **Antigravity IDE** ve **Claude Code CLI** ortamlarında zahmetsizce 
 
 ---
 
+## 🛠️ Mevcut Bir Projeye Nasıl Entegre Edeceksiniz?
+
+Devam eden, kod yazılmış **mevcut bir projenize** bu sistemi entegre etmek son derece güvenlidir:
+
+### 🌟 Antigravity IDE İle Mevcut Proje Entegrasyonu (Sıfır Çaba)
+1. **Mevcut projenizin klasörünü Antigravity IDE ile açın.**
+2. Sohbet penceresine yazın:
+   > *"Mevcut projemizin mimarisini ve kod yapısını inceleyip geliştirmeye devam edelim."*  
+   > *(Veya: `@architect mevcut projeyi analiz edelim`)*
+3. **Sistem Ne Yapar?**
+   - Global 41 Skill ve anayasa anında aktifleşir.
+   - `codebase-memory` MCP sunucusu mevcut kod bağımlılıklarını ve AST yapısını haritalandırır (`index_repository`).
+   - `@architect` mevcut kod yapısını bozmadan mimari haritayı (`ARCHITECTURE.md`) çıkarır ve onayınızla yeni özellikleri planlar.
+
+---
+
+### 💻 Claude Code CLI İle Mevcut Proje Entegrasyonu
+1. **Şablon Konfigürasyonlarını Mevcut Projenize Kopyalayın:**
+   ```powershell
+   # Mevcut projenizin klasöründeyken PowerShell ile:
+   Copy-Item -Path "path\to\skills\.claude" -Destination "." -Recurse -Force
+   Copy-Item -Path "path\to\skills\CLAUDE.md" -Destination "." -Force
+   ```
+2. **Senkronizasyonu Çalıştırın:**
+   ```powershell
+   python .claude/hooks/sync_skills.py
+   ```
+3. **Claude Code'u Başlatın:**
+   ```bash
+   claude
+   ```
+
+---
+
 ### 💡 `@tag` Kullanmak Zorunlu mu? (Esnek Kullanım)
 - **HAYIR, ZORUNLU DEĞİLDİR!** `@architect`, `@worker-coder` gibi etiketler sadece isterseniz kullanabileceğiniz kısayollardır.
 - Ne yapmak istediğinizi **Türkçe doğal dilinizle anlatmanız yeterlidir.** Sistem arka planda doğru ajanı ve skill'i otomatik tespit edip çalıştırır:
