@@ -48,7 +48,7 @@ Bu sistemi **Antigravity IDE** ve **Claude Code CLI** ortamlarında zahmetsizce 
    > *"Yeni bir RL / Simülasyon projesi başlatmak istiyorum. Projemin amacı: [Fikrinizi yazın]"*  
    > *(Veya doğrudan: `@architect yeni proje tasarlayalım`)*
 3. **Arka Planda Ne Olur?**
-   - Global 43 Skill ve anayasa otomatik yüklenir.
+   - Global 45 Skill ve anayasa otomatik yüklenir.
    - Projenizde varsayılan `.gitignore` ve kilitli `FORMULATION.md` dosyası oluşturulur.
    - `codebase-memory` MCP sunucusu projeyi otomatik indeksler.
 
@@ -84,7 +84,7 @@ Devam eden, kod yazılmış **mevcut bir projenize** bu sistemi entegre etmek so
    > *"Mevcut projemizin mimarisini ve kod yapısını inceleyip geliştirmeye devam edelim."*  
    > *(Veya: `@architect mevcut projeyi analiz edelim`)*
 3. **Sistem Ne Yapar?**
-   - Global 43 Skill ve anayasa anında aktifleşir.
+   - Global 45 Skill ve anayasa anında aktifleşir.
    - `codebase-memory` MCP sunucusu mevcut kod bağımlılıklarını ve AST yapısını haritalandırır (`index_repository`).
    - `@architect` mevcut kod yapısını bozmadan mimari haritayı (`ARCHITECTURE.md`) çıkarır ve onayınızla yeni özellikleri planlar.
 
@@ -129,12 +129,13 @@ Akademik projelerde matematiksel denklemler, semboller, teorik açıklamalar ve 
 
 ---
 
-## 📚 Detaylı Skills Kütüphanesi Rehberi (43 Skill)
+## 📚 Detaylı Skills Kütüphanesi Rehberi (45 Skill)
 
-### 1. 🎓 Akademik Araştırma & Metodoloji Skill'leri (11 Skill)
+### 1. 🎓 Akademik Araştırma & Metodoloji Skill'leri (12 Skill)
 
 | Skill | Tetikleyici | Detaylı Açıklama |
 |---|---|---|
+| **`academic-peer-review`** | Makale hakemliği, review | NeurIPS, ICML, ICLR ve IEEE konferans hakemi gözüyle (Soundness, Originality, Clarity, Significance) acımasız hakem simülasyonu yapar ve zayıf noktaları raporlar. |
 | **`academic-integrity`** | Atıf, referans, iddia | Her bilimsel iddianın kaynağa dayalı olmasını sağlar. Doğrulanmamış veya uydurma atıfları engeller, DOI ve Google Scholar doğrulama protokolü uygular. |
 | **`empirical-rigor`** | Deney tasarımı, benchmark | Akademik deneylerde en az 5 rastgele seed (tohum) zorunluluğu, hiperparametre sabitleme ve tekrarlanabilirlik standartları koyar. |
 | **`fair-comparison`** | Yöntem karşılaştırması | Kendi yönteminiz ile baseline yöntemler arasında eşit hesaplama bütçesi (GPU/Step) ve adil değerlendirme şartlarını garanti eder. |
@@ -177,10 +178,11 @@ Akademik projelerde matematiksel denklemler, semboller, teorik açıklamalar ve 
 
 ---
 
-### 4. 💻 Yazılım Mühendisliği & Optimizasyon Skill'leri (18 Skill)
+### 4. 💻 Yazılım Mühendisliği & Optimizasyon Skill'leri (19 Skill)
 
 | Skill | Tetikleyici | Detaylı Açıklama |
 |---|---|---|
+| **`auto-adr-generator`** | Mimari karar kaydı (ADR) | Alınan majör mimari kararları otomatik olarak `docs/adr/` altında MADR formatında belgelendirir. |
 | **`token-budget-optimizer`** | Token optimizasyonu, minimal context | Alt ajan context izolasyonu (Subagent context isolation), log budama (log pruning) ve AST parçalı kod okuma ile %70 token tasarrufu sağlar. |
 | **`self-consistency-verifier`** | Hakem kontrolü, self-correction | Kod üreten ajan ile sınayan ajanı ayırarak bağımsız hakem kontrolü (Critique loop) ve sınır-değer (edge-case) denetimi yapar. |
 | **`code-architect`** | Yeni proje / refactor | Modüler, katmanlı, bağımlılıkları temiz ve ölçeklenebilir yazılım mimarileri tasarlar. |
@@ -210,11 +212,11 @@ skills/
 ├── README.md                     ← Bu dosya
 ├── .agents/                      ← Antigravity IDE Yerel Konfigürasyonu
 │   ├── AGENTS.md                 ← Antigravity IDE Anayasası
-│   └── skills/                   ← 43 Skill Tanımı
+│   └── skills/                   ← 45 Skill Tanımı
 ├── .claude/
 │   ├── settings.json             ← Lifecycle Hooks & MCP Server Ayarları
 │   ├── agents/                   ← 8 Ajan Tanımı (Architect, Planner, Coder vb.)
-│   ├── skills/                   ← 43 Skill Tanımı (Akademik & Kodlama)
+│   ├── skills/                   ← 45 Skill Tanımı (Akademik & Kodlama)
 │   ├── hooks/                    ← Hook Scriptleri (sync_skills, security_gate vb.)
 │   ├── context/                  ← Oturum Belleği (ARCHITECTURE.md, context.db, FORMULATION.md)
 │   └── templates/                ← Proje Şablonları (.gitignore, FORMULATION.md, git-hooks)
