@@ -48,7 +48,7 @@ Bu sistemi **Antigravity IDE** ve **Claude Code CLI** ortamlarında zahmetsizce 
    > *"Yeni bir RL / Simülasyon projesi başlatmak istiyorum. Projemin amacı: [Fikrinizi yazın]"*  
    > *(Veya doğrudan: `@architect yeni proje tasarlayalım`)*
 3. **Arka Planda Ne Olur?**
-   - Global 39 Skill ve anayasa otomatik yüklenir.
+   - Global 41 Skill ve anayasa otomatik yüklenir.
    - Projenizde varsayılan `.gitignore` ve kilitli `FORMULATION.md` dosyası oluşturulur.
    - `codebase-memory` MCP sunucusu projeyi otomatik indeksler.
 
@@ -105,7 +105,7 @@ Akademik projelerde matematiksel denklemler, semboller, teorik açıklamalar ve 
 
 ---
 
-## 📚 Detaylı Skills Kütüphanesi Rehberi (39 Skill)
+## 📚 Detaylı Skills Kütüphanesi Rehberi (41 Skill)
 
 ### 1. 🎓 Akademik Araştırma & Metodoloji Skill'leri (11 Skill)
 
@@ -125,12 +125,14 @@ Akademik projelerde matematiksel denklemler, semboller, teorik açıklamalar ve 
 
 ---
 
-### 2. 🤖 Reinforcement Learning & Simülasyon Skill'leri (6 Skill)
+### 2. 🤖 Reinforcement Learning & Simülasyon Skill'leri (8 Skill)
 
 | Skill | Tetikleyici | Detaylı Açıklama |
 |---|---|---|
 | **`rl-environment-design`** | Gymnasium / RL ortamı | Gymnasium/PettingZoo uyumlu observation/action space, `reset()`, `step()`, `render()` ve reward aralıklarını tasarlar. |
 | **`rl-reward-shaping`** | Ödül fonksiyonu, hacking | Potential-based reward shaping ($\Phi(s)$) kurar; ajanın sırtüstü sürüklenme gibi reward hacking yapmasını ve ters teşvikleri engeller. |
+| **`rl-marl-design`** | Çok-Ajanlı RL (MARL) | PettingZoo uyumlu Çok-Ajanlı RL (CTDE, MAPPO, QMIX, IPPO) ortam ve algoritma mimarisi tasarlar. |
+| **`rl-offline-dataset`** | Offline RL, D4RL | İnteraktif olmayan sabit veri setlerinden Offline RL eğitimi (CQL, IQL, D4RL formatı) ve Out-Of-Distribution denetimi yürütür. |
 | **`rl-experiment-tracking`** | RL deney takibi, multi-seed | Multi-seed eğitim eğrilerini, evaluation episode metriklerini ve model checkpoint'lerini izler. |
 | **`rl-paper-implementation`** | Makale → RL Kod | Yayınlanmış bir RL algoritmasını koda aktarırken pseudocode ile koddaki tüm sapmaları (deviations log) belgeler. |
 | **`simulation-experiment-design`** | Simülasyon deneyi | Fiziksel ve ajan bazlı simülasyonların zaman adımı ($dt$), entegrasyon yöntemi (Euler/RK4) ve parametre tarama planını yapar. |
@@ -182,11 +184,11 @@ skills/
 ├── README.md                     ← Bu dosya
 ├── .agents/                      ← Antigravity IDE Yerel Konfigürasyonu
 │   ├── AGENTS.md                 ← Antigravity IDE Anayasası
-│   └── skills/                   ← 39 Skill Tanımı
+│   └── skills/                   ← 41 Skill Tanımı
 ├── .claude/
 │   ├── settings.json             ← Lifecycle Hooks & MCP Server Ayarları
 │   ├── agents/                   ← 8 Ajan Tanımı (Architect, Planner, Coder vb.)
-│   ├── skills/                   ← 39 Skill Tanımı (Akademik & Kodlama)
+│   ├── skills/                   ← 41 Skill Tanımı (Akademik & Kodlama)
 │   ├── hooks/                    ← Hook Scriptleri (sync_skills, security_gate vb.)
 │   ├── context/                  ← Oturum Belleği (ARCHITECTURE.md, context.db, FORMULATION.md)
 │   └── templates/                ← Proje Şablonları (.gitignore, FORMULATION.md, git-hooks)
