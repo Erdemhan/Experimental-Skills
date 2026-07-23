@@ -48,7 +48,7 @@ Bu sistemi **Antigravity IDE** ve **Claude Code CLI** ortamlarında zahmetsizce 
    > *"Yeni bir RL / Simülasyon projesi başlatmak istiyorum. Projemin amacı: [Fikrinizi yazın]"*  
    > *(Veya doğrudan: `@architect yeni proje tasarlayalım`)*
 3. **Arka Planda Ne Olur?**
-   - Global 41 Skill ve anayasa otomatik yüklenir.
+   - Global 43 Skill ve anayasa otomatik yüklenir.
    - Projenizde varsayılan `.gitignore` ve kilitli `FORMULATION.md` dosyası oluşturulur.
    - `codebase-memory` MCP sunucusu projeyi otomatik indeksler.
 
@@ -84,7 +84,7 @@ Devam eden, kod yazılmış **mevcut bir projenize** bu sistemi entegre etmek so
    > *"Mevcut projemizin mimarisini ve kod yapısını inceleyip geliştirmeye devam edelim."*  
    > *(Veya: `@architect mevcut projeyi analiz edelim`)*
 3. **Sistem Ne Yapar?**
-   - Global 41 Skill ve anayasa anında aktifleşir.
+   - Global 43 Skill ve anayasa anında aktifleşir.
    - `codebase-memory` MCP sunucusu mevcut kod bağımlılıklarını ve AST yapısını haritalandırır (`index_repository`).
    - `@architect` mevcut kod yapısını bozmadan mimari haritayı (`ARCHITECTURE.md`) çıkarır ve onayınızla yeni özellikleri planlar.
 
@@ -105,16 +105,6 @@ Devam eden, kod yazılmış **mevcut bir projenize** bu sistemi entegre etmek so
    ```bash
    claude
    ```
-
----
-
-### 💡 `@tag` Kullanmak Zorunlu mu? (Esnek Kullanım)
-- **HAYIR, ZORUNLU DEĞİLDİR!** `@architect`, `@worker-coder` gibi etiketler sadece isterseniz kullanabileceğiniz kısayollardır.
-- Ne yapmak istediğinizi **Türkçe doğal dilinizle anlatmanız yeterlidir.** Sistem arka planda doğru ajanı ve skill'i otomatik tespit edip çalıştırır:
-  - *"Sıfırdan mimari tasarlayalım"* ──► Otomatik `@architect` devrededir.
-  - *"Şu koddaki hatayı bulup çözelim"* ──► Otomatik `@worker-coder`, `@unit-tester` ve `research-debug` devrededir.
-  - *"Deneyleri 5 seed ile koşturalım"* ──► Otomatik `@experiment-runner` ve `empirical-rigor` devrededir.
-  - *"Sonuçlardan LaTeX makale üret"* ──► Otomatik `@paper-writer` ve `latex-bibtex-manager` devrededir.
 
 ---
 
@@ -139,7 +129,7 @@ Akademik projelerde matematiksel denklemler, semboller, teorik açıklamalar ve 
 
 ---
 
-## 📚 Detaylı Skills Kütüphanesi Rehberi (41 Skill)
+## 📚 Detaylı Skills Kütüphanesi Rehberi (43 Skill)
 
 ### 1. 🎓 Akademik Araştırma & Metodoloji Skill'leri (11 Skill)
 
@@ -187,10 +177,12 @@ Akademik projelerde matematiksel denklemler, semboller, teorik açıklamalar ve 
 
 ---
 
-### 4. 💻 Yazılım Mühendisliği & Kodlama Skill'leri (16 Skill)
+### 4. 💻 Yazılım Mühendisliği & Optimizasyon Skill'leri (18 Skill)
 
 | Skill | Tetikleyici | Detaylı Açıklama |
 |---|---|---|
+| **`token-budget-optimizer`** | Token optimizasyonu, minimal context | Alt ajan context izolasyonu (Subagent context isolation), log budama (log pruning) ve AST parçalı kod okuma ile %70 token tasarrufu sağlar. |
+| **`self-consistency-verifier`** | Hakem kontrolü, self-correction | Kod üreten ajan ile sınayan ajanı ayırarak bağımsız hakem kontrolü (Critique loop) ve sınır-değer (edge-case) denetimi yapar. |
 | **`code-architect`** | Yeni proje / refactor | Modüler, katmanlı, bağımlılıkları temiz ve ölçeklenebilir yazılım mimarileri tasarlar. |
 | **`function-spec-writer`** | Fonksiyon tasarımı | Fonksiyon imzası, type hints, Google-style docstring, edge case ve test case içeren `FunctionSpec` JSON üretir. |
 | **`unit-test-design`** | Unit test yazımı | PyTest ile sınır değerler (boundary values), istisnalar (exceptions) ve fixture'lar içeren birim testler yazar. |
@@ -218,11 +210,11 @@ skills/
 ├── README.md                     ← Bu dosya
 ├── .agents/                      ← Antigravity IDE Yerel Konfigürasyonu
 │   ├── AGENTS.md                 ← Antigravity IDE Anayasası
-│   └── skills/                   ← 41 Skill Tanımı
+│   └── skills/                   ← 43 Skill Tanımı
 ├── .claude/
 │   ├── settings.json             ← Lifecycle Hooks & MCP Server Ayarları
 │   ├── agents/                   ← 8 Ajan Tanımı (Architect, Planner, Coder vb.)
-│   ├── skills/                   ← 41 Skill Tanımı (Akademik & Kodlama)
+│   ├── skills/                   ← 43 Skill Tanımı (Akademik & Kodlama)
 │   ├── hooks/                    ← Hook Scriptleri (sync_skills, security_gate vb.)
 │   ├── context/                  ← Oturum Belleği (ARCHITECTURE.md, context.db, FORMULATION.md)
 │   └── templates/                ← Proje Şablonları (.gitignore, FORMULATION.md, git-hooks)

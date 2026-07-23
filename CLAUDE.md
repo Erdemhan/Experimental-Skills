@@ -52,6 +52,9 @@ This project uses a **3-tier agent hierarchy**. Select the appropriate agent for
 - **📐 Formal Standards & Latest Stable Version Rule**:
   - **Formal Methodology**: When implementing algorithms, mathematical models, or architectures, ad-hoc, informal, or hacky shortcuts are strictly prohibited. Agents MUST strictly adhere to the most formal, mathematically rigorous standards from peer-reviewed literature and official specifications.
   - **Latest Stable Versions**: Deprecated APIs, obsolete syntax, or legacy package patterns (e.g. legacy Gym instead of `gymnasium`, outdated PyTorch autograd patterns instead of `torch.amp` / `torch.compile`, deprecated NumPy scalar types) are forbidden. Agents MUST target the latest stable releases and official current API specifications.
+- **⚡ Token Budgeting & Context Isolation Rule**:
+  - **Subagent Context Isolation**: Subagents (`worker-coder`, `unit-tester`) MUST be invoked with minimal isolated context (`FunctionSpec` JSON and error tracebacks) rather than dumping full conversation history.
+  - **Log & File Pruning**: Full file viewing for files > 300 lines or reading full 1000-line log files is forbidden. Use targeted `view_file` line ranges and traceback extraction to preserve context window attention.
 - Every function must have a `FunctionSpec` JSON before implementation.
 - Code without unit tests is NEVER considered `Done`.
 - Type annotations (type hints) are mandatory.
