@@ -16,10 +16,11 @@ description: >
 
 ## Yeni Bağımlılık Ekleme Kontrol Listesi
 
-### 1. Gerçekten Gerekli Mi?
+### 1. Gerçekten Gerekli Mi & En Güncel Kararlı Sürüm Mü?
 - [ ] Standart kütüphane ile çözülebilir mi? (önce stdlib bak)
 - [ ] Mevcut bağımlılık bu ihtiyacı karşılamıyor mu?
-- [ ] 50 satır kod mı yoksa tam kütüphane mi gerekiyor?
+- [ ] Deprecated (kullanımdan kalkmış) eski kütüphane mi (örn: legacy `gym`) yoksa en güncel kararlı sürüm mü (örn: `gymnasium`)?
+- [ ] Kütüphanenin en son kararlı (latest stable) sürümü ve resmi API standartları mı hedefleniyor?
 
 ### 2. Güvenlik Kontrolü
 ```bash

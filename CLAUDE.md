@@ -49,6 +49,9 @@ This project uses a **3-tier agent hierarchy**. Select the appropriate agent for
   - **Goal Distortion Prevention**: Bug fixes must not alter the test hypothesis (`hypothesis-framing`) or distort fair comparison baselines (`fair-comparison`).
   - Classify bugs into Type A (isolated software), Type B (result-altering), or Type C (methodology-breaking).
   - Type B and C bugs require assessing previous results and specifying `BUG-IMPACT` in commit messages before modifying code.
+- **📐 Formal Standards & Latest Stable Version Rule**:
+  - **Formal Methodology**: When implementing algorithms, mathematical models, or architectures, ad-hoc, informal, or hacky shortcuts are strictly prohibited. Agents MUST strictly adhere to the most formal, mathematically rigorous standards from peer-reviewed literature and official specifications.
+  - **Latest Stable Versions**: Deprecated APIs, obsolete syntax, or legacy package patterns (e.g. legacy Gym instead of `gymnasium`, outdated PyTorch autograd patterns instead of `torch.amp` / `torch.compile`, deprecated NumPy scalar types) are forbidden. Agents MUST target the latest stable releases and official current API specifications.
 - Every function must have a `FunctionSpec` JSON before implementation.
 - Code without unit tests is NEVER considered `Done`.
 - Type annotations (type hints) are mandatory.
