@@ -1,0 +1,64 @@
+# .pre-commit-config.yaml
+# ============================================================
+# pre-commit framework konfigürasyonu
+#
+# Kurulum:
+#   pip install pre-commit
+#   cp .claude/templates/.pre-commit-config.yaml .pre-commit-config.yaml
+#   pre-commit install
+#
+# Manuel çalıştırma:
+#   pre-commit run --all-files
+# ============================================================
+
+repos:
+  # ── Python Formatı ──────────────────────────────────────────
+  - repo: https://github.com/psf/black
+    rev: 24.3.0
+    hooks:
+      - id: black
+        language_version: python3
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.4.1
+    hooks:
+      - id: ruff
+        args: [--fix]
+
+  # ── Tip Kontrolü ─────────────────────────────────────────────
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.9.0
+    hooks:
+      - id: mypy
+        additional_dependencies: [types-all]
+        args: [--ignore-missing-imports]
+
+  # ── Genel Kontroller ─────────────────────────────────────────
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: trailing-whitespace      # Satır sonu boşlukları temizle
+      - id: end-of-file-fixer        # Dosya sonu newline
+      - id: check-yaml               # YAML sözdizimi
+      - id: check-json               # JSON sözdizimi
+      - id: check-toml               # TOML sözdizimi
+      - id: check-merge-conflict     # Merge conflict işaretleri
+      - id: check-added-large-files  # 100MB+ dosyalar
+        args: [--maxkb=10240]        # 10MB limit (veri setleri için)
+      - id: detect-private-key       # Gizli anahtar tespiti
+
+  # ── Jupyter Notebook ─────────────────────────────────────────
+  # Notebook çıktılarını temizle (reproducibility için önerilen)
+  # Aktif etmek için aşağıdaki yorumu kaldırın:
+  # - repo: https://github.com/kynan/nbstripout
+  #   rev: 0.7.1
+  #   hooks:
+  #     - id: nbstripout
+
+  # ── Commit Mesajı Standardı ──────────────────────────────────
+  # Manuel commit-msg hook yerine bu kullanılabilir:
+  # - repo: https://github.com/commitizen-tools/commitizen
+  #   rev: v3.21.3
+  #   hooks:
+  #     - id: commitizen
+  #       stages: [commit-msg]

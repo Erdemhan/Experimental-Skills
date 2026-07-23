@@ -1,0 +1,56 @@
+#!/bin/sh
+# ============================================================
+# commit-msg hook — Conventional Commits formatını zorunlu kılar
+#
+# Kurulum:
+#   cp .claude/templates/git-hooks/commit-msg .git/hooks/commit-msg
+#   chmod +x .git/hooks/commit-msg
+#
+# veya otomatik (proje kök dizininde):
+#   python3 .claude/templates/git-hooks/install_hooks.py
+# ============================================================
+
+COMMIT_MSG_FILE="$1"
+COMMIT_MSG=$(cat "$COMMIT_MSG_FILE")
+
+# Merge, revert, fixup commit'lerini atla
+case "$COMMIT_MSG" in
+    Merge*|Revert*|fixup!*|squash!*|WIP*)
+        exit 0
+        ;;
+esac
+
+# Conventional Commits pattern
+# <type>(<scope>): <description>
+PATTERN="^(feat|fix|docs|style|refactor|test|chore|perf|ci|revert|build|exp|data|result)(\(.{1,30}\))?: .{1,100}$"
+
+if ! echo "$COMMIT_MSG" | grep -qE "$PATTERN"; then
+    echo ""
+    echo "❌ Commit mesajı Conventional Commits formatına uymuyor!"
+    echo ""
+    echo "   Format: <type>(<scope>): <kısa açıklama>"
+    echo ""
+    echo "   Tipler:"
+    echo "     feat      — Yeni özellik"
+    echo "     fix       — Hata düzeltme"
+    echo "     docs      — Dokümantasyon"
+    echo "     refactor  — Davranış değişmeden düzenleme"
+    echo "     test      — Test ekleme/düzenleme"
+    echo "     chore     — Bakım, bağımlılık"
+    echo "     exp       — Akademik deney (experiment)"
+    echo "     data      — Veri işleme veya veri seti değişikliği"
+    echo "     result    — Deney sonucu, figür, rapor"
+    echo ""
+    echo "   Örnekler:"
+    echo "     feat(env): add custom reward shaping"
+    echo "     exp(ppo): add seed 42 baseline run"
+    echo "     data(turkish-sentiment): add 5k new samples"
+    echo "     result(ablation): add table 3 figures"
+    echo "     fix(trainer): handle NaN loss in epoch 5"
+    echo ""
+    echo "   Girilen mesaj: $COMMIT_MSG"
+    echo ""
+    exit 1
+fi
+
+exit 0

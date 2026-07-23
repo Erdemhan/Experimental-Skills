@@ -1,0 +1,50 @@
+#!/bin/sh
+# ============================================================
+# pre-push hook — push öncesi son kontrol
+#
+# Kurulum:
+#   cp .claude/templates/git-hooks/pre-push .git/hooks/pre-push
+#   chmod +x .git/hooks/pre-push
+# ============================================================
+
+REMOTE="$1"
+URL="$2"
+
+echo "🚀 pre-push: $REMOTE ($URL) kontrol ediliyor..."
+
+# Hangi branch push ediliyor?
+BRANCH=$(git rev-parse --abbrev-ref HEAD)
+
+# ---- main/master'a doğrudan push uyarısı ----
+if [ "$BRANCH" = "main" ] || [ "$BRANCH" = "master" ]; then
+    echo "⚠️  Doğrudan $BRANCH branch'ine push ediyorsunuz!"
+    echo "   Devam etmek için 'yes' yazın (ya da Ctrl+C ile iptal):"
+    read -r response
+    if [ "$response" != "yes" ]; then
+        echo "İptal edildi."
+        exit 1
+    fi
+fi
+
+# ---- WIP veya geçici commit kontrolü ----
+WIP_COMMITS=$(git log @{u}..HEAD --oneline 2>/dev/null | grep -iE "^[a-f0-9]+ (WIP|TEMP|FIXME|HACK|DO NOT PUSH|tmp|wip)") 2>/dev/null
+if [ -n "$WIP_COMMITS" ]; then
+    echo "❌ Push edilecek commit'lerde WIP/TEMP mesajı var:"
+    echo "$WIP_COMMITS"
+    echo "   Lütfen 'git rebase -i @{u}' ile temizleyin."
+    exit 1
+fi
+
+# ---- Hızlı test çalıştırma (opsiyonel — varsa) ----
+# Projenizde pytest kullanıyorsanız bu bloğu aktif edin:
+# if [ -f "pytest.ini" ] || [ -f "pyproject.toml" ]; then
+#     echo "  → Hızlı testler çalıştırılıyor..."
+#     pytest tests/unit/ -q --tb=no -x 2>/dev/null
+#     if [ $? -ne 0 ]; then
+#         echo "❌ Testler başarısız — push iptal edildi."
+#         exit 1
+#     fi
+# fi
+
+echo "✅ pre-push kontrolleri geçti."
+exit 0
