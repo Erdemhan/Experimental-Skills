@@ -105,72 +105,72 @@ Akademik projelerde matematiksel denklemler, semboller, teorik açıklamalar ve 
 
 ---
 
-## 📚 Detailed Skills Library Guide (39 Skills)
+## 📚 Detaylı Skills Kütüphanesi Rehberi (39 Skill)
 
-### 1. 🎓 Academic Research & Methodology Skills (11 Skills)
+### 1. 🎓 Akademik Araştırma & Metodoloji Skill'leri (11 Skill)
 
-| Skill | Trigger | Detailed Description |
+| Skill | Tetikleyici | Detaylı Açıklama |
 |---|---|---|
-| **`academic-integrity`** | Citation, claim, reference | Guarantees all factual claims have verified sources. Prevents hallucinated citations, enforcing DOI/Scholar verification protocols. |
-| **`empirical-rigor`** | Experiment design, benchmark | Enforces minimum 5 random seeds, hyperparameter freezing, and reproducibility standards for empirical experiments. |
-| **`fair-comparison`** | Method baseline evaluation | Guarantees equal computational budget (steps/GPUs) and equal tuning effort between proposed methods and baselines. |
-| **`bias-audit`** | Dataset/analysis audit | Detects selection bias, evaluation bias, data leakage, and selective metric reporting risks. |
-| **`statistical-validity`** | Numerical result interpretation | Computes 95% Confidence Intervals (CI), Welch's t-test p-values, and Cohen's d effect sizes for statistical rigor. |
-| **`literature-review`** | Alanyazın / Literature review | Summarizes related research across methodology, dataset, and performance axes; identifies research gaps. |
-| **`hypothesis-framing`** | Research Question design | Formulates falsifiable Research Questions (RQs) and hypotheses (H1/H0). |
-| **`paper-structure`** | Academic writing outline | Organizes paper section structure (Abstract, Intro, Method, Experiments) and logical argument flow. |
-| **`latex-bibtex-manager`** | LaTeX template, BibTeX | Compiles NeurIPS/ICML/IEEE/ACM LaTeX templates, cleans duplicate BibTeX keys, and resolves `latexmk` errors. |
-| **`dataset-documentation`** | Dataset card | Produces *Datasheets for Datasets* documentation detailing data collection, annotation, and usage limits. |
-| **`replication-package`** | Work sharing | Generates single-command `reproduce_all.py` scripts and full environment packaging for Zenodo/GitHub publication. |
+| **`academic-integrity`** | Atıf, referans, iddia | Her bilimsel iddianın kaynağa dayalı olmasını sağlar. Doğrulanmamış veya uydurma atıfları engeller, DOI ve Google Scholar doğrulama protokolü uygular. |
+| **`empirical-rigor`** | Deney tasarımı, benchmark | Akademik deneylerde en az 5 rastgele seed (tohum) zorunluluğu, hiperparametre sabitleme ve tekrarlanabilirlik standartları koyar. |
+| **`fair-comparison`** | Yöntem karşılaştırması | Kendi yönteminiz ile baseline yöntemler arasında eşit hesaplama bütçesi (GPU/Step) ve adil değerlendirme şartlarını garanti eder. |
+| **`bias-audit`** | Veri/analiz değerlendirme | Veri setindeki seçim yanlılığı (selection bias), overfitting ve seçici metrik raporlama risklerini tespit edip raporlar. |
+| **`statistical-validity`** | Sayısal sonuç yorumu | Deney sonuçları için %95 Güven Aralığı (CI), Welch's t-testi ile p-değeri ve Cohen's d etki büyüklüğünü hesaplar. |
+| **`literature-review`** | Alanyazın tarama | İlgili akademik çalışmaları metodoloji, veri seti ve performans ekseninde özetler; araştırma boşluğunu (gap) belirler. |
+| **`hypothesis-framing`** | Araştırma sorusu tasarımı | Araştırma Sorusu (RQ) ve doğrulanabilir/yanlışlanabilir Hipotez (H1/H0) formatı oluşturur. |
+| **`paper-structure`** | Akademik yazı üretimi | Makalenin bölüm mantığını (Abstract, Intro, Method, Experiments, Discussion) ve mantıksal argüman akışını düzenler. |
+| **`latex-bibtex-manager`** | LaTeX şablonu, BibTeX | NeurIPS, ICML, ICLR, IEEE ve ACM LaTeX şablonlarını derler; BibTeX mükerrer atıflarını temizler ve `latexmk` hatalarını çözümler. |
+| **`dataset-documentation`** | Veri seti kartı | *Datasheets for Datasets* standardında veri toplama, etiketleme ve kullanım kısıtlarını içeren belge hazırlar. |
+| **`replication-package`** | Çalışma paylaşımı | Zenodo ve GitHub için tek komutluk `reproduce_all.py` scripti ve bağımlılıklarla tam tekrarlanabilirlik paketi oluşturur. |
 
 ---
 
-### 2. 🤖 Reinforcement Learning & Simulation Skills (6 Skills)
+### 2. 🤖 Reinforcement Learning & Simülasyon Skill'leri (6 Skill)
 
-| Skill | Trigger | Detailed Description |
+| Skill | Tetikleyici | Detaylı Açıklama |
 |---|---|---|
-| **`rl-environment-design`** | Gymnasium / RL environment | Designs Gymnasium/PettingZoo compliant observation/action spaces, `reset()`, `step()`, and reward bounds. |
-| **`rl-reward-shaping`** | Reward function, hacking | Implements potential-based reward shaping ($\Phi(s)$); prevents reward hacking and perverse agent incentives. |
-| **`rl-experiment-tracking`** | RL experiment tracking | Monitors multi-seed training curves, evaluation episode metrics, and model checkpoints. |
-| **`rl-paper-implementation`** | Paper → RL Code | Converts published RL paper pseudocode into executable PyTorch code, logging all implementation deviations. |
-| **`simulation-experiment-design`** | Simulation experiment | Designs time-step ($dt$) integration, state update loops, and parameter sweep grids for physical/agent-based simulations. |
-| **`ray-rllib`** | Ray & RLlib distributed | Sets up Ray Tune and RLlib for multi-GPU / multi-core cluster distributed RL training and hyperparameter search. |
+| **`rl-environment-design`** | Gymnasium / RL ortamı | Gymnasium/PettingZoo uyumlu observation/action space, `reset()`, `step()`, `render()` ve reward aralıklarını tasarlar. |
+| **`rl-reward-shaping`** | Ödül fonksiyonu, hacking | Potential-based reward shaping ($\Phi(s)$) kurar; ajanın sırtüstü sürüklenme gibi reward hacking yapmasını ve ters teşvikleri engeller. |
+| **`rl-experiment-tracking`** | RL deney takibi, multi-seed | Multi-seed eğitim eğrilerini, evaluation episode metriklerini ve model checkpoint'lerini izler. |
+| **`rl-paper-implementation`** | Makale → RL Kod | Yayınlanmış bir RL algoritmasını koda aktarırken pseudocode ile koddaki tüm sapmaları (deviations log) belgeler. |
+| **`simulation-experiment-design`** | Simülasyon deneyi | Fiziksel ve ajan bazlı simülasyonların zaman adımı ($dt$), entegrasyon yöntemi (Euler/RK4) ve parametre tarama planını yapar. |
+| **`ray-rllib`** | Ray & RLlib dağıtık | Ray Tune ve RLlib ile çok-GPU / çok-çekirdekli küme üzerinde dağıtık RL eğitimi ve hiperparametre arama kurar. |
 
 ---
 
-### 3. 🌉 Academic & Coding Bridge Skills (6 Skills)
+### 3. 🌉 Akademik & Kodlama Köprü Skill'leri (6 Skill)
 
-| Skill | Trigger | Detailed Description |
+| Skill | Tetikleyici | Detaylı Açıklama |
 |---|---|---|
-| **`research-debug`** | Academic debugging | Classifies bugs by academic impact (Type A: Isolated, Type B: Result-altering, Type C: Methodology-breaking) before fixing. |
-| **`paper-to-reproducible-code`** | Paper table ↔ Code audit | Performs 1-to-1 parameter audits between published paper tables/`FORMULATION.md` and codebase `configs/*.yaml`. |
-| **`result-analysis-pipeline`** | Log → Stats → Figure | Parses raw logs, computes statistical tests, plots colorblind-friendly PDF figures, and exports TeX table fragments. |
-| **`academic-code-release`** | Code release with paper | Prepares clean READMEs, Zenodo DOIs, and standalone reproduction scripts for code release alongside papers. |
-| **`wandb-mlflow-api`** | WandB / MLflow API | Programmatically queries and fetches run metrics from Weights & Biases or MLflow cloud servers into Pandas DataFrames. |
-| **`git-research`** | Academic Git workflow | Manages academic commit types (`exp:`, `data:`, `result:`) and `paper/` branching models while excluding large model weights. |
+| **`research-debug`** | Akademik hata ayıklama | Araştırma kodundaki hatanın metrikleri etkileyip etkilemediğini (Tip A: İzole, Tip B: Sonuç değiştiren, Tip C: Metodoloji bozucu) analiz eder; Tip B/C hatalarda git tag ve re-run planı çıkarır. |
+| **`paper-to-reproducible-code`** | Makale tablosu ↔ Kod | Makaledeki Tablo 1/2 hiperparametreleri ve `FORMULATION.md` ile koddaki `configs/*.yaml` dosyaları arasında 1-e-1 parametre denetimi yapar. |
+| **`result-analysis-pipeline`** | Log → İstatistik → Figür | Ham logları yükler, istatistiksel testleri hesaplar, renk körü dostu PDF figürler çizer ve yayın kalitesinde LaTeX tablosu üretir. |
+| **`academic-code-release`** | Paper ile kod yayınlama | Kodu makale ile birlikte sunmak için temiz README, Zenodo DOI ve bağımsız makinede sınama kontrollerini yürütür. |
+| **`wandb-mlflow-api`** | WandB / MLflow API | Weights & Biases veya MLflow bulut servislerinden koşu verilerini ve metrikleri programatik olarak Pandas DataFrame'e çeker. |
+| **`git-research`** | Akademik Git yönetimi | Akademik projelerdeki `exp:`, `data:`, `result:` commit tiplerini ve `paper/` dallanma (branching) modelini yönetir. |
 
 ---
 
-### 4. 💻 Software Engineering & Coding Skills (16 Skills)
+### 4. 💻 Yazılım Mühendisliği & Kodlama Skill'leri (16 Skill)
 
-| Skill | Trigger | Detailed Description |
+| Skill | Tetikleyici | Detaylı Açıklama |
 |---|---|---|
-| **`code-architect`** | New project / refactor | Designs modular, layered, clean-dependency software architectures and component interfaces. |
-| **`function-spec-writer`** | Function spec design | Generates detailed `FunctionSpec` JSON files containing signatures, type hints, Google-style docstrings, and test cases. |
-| **`unit-test-design`** | Unit test writing | Writes comprehensive PyTest suites covering boundary values, exceptions, and test fixtures. |
-| **`debug-tracer`** | Software debugging | Applies hypothesis-driven debugging loops (Observation → Hypothesis → Test → Fix) and git bisect. |
-| **`ml-experiment`** | ML experiment setup | Sets up standard ML train/val/test data splits, cross-validation, and pipeline evaluation loops. |
-| **`pytorch-training`** | PyTorch training loop | Optimizes PyTorch GPU memory usage, mixed precision (AMP), gradient clipping, and checkpoint saving. |
-| **`performance-profiler`** | Performance optimization | Profiles CPU/GPU code bottlenecks using cProfile, PyTorch Profiler, and memory-profiler. |
-| **`api-design`** | API creation | Designs RESTful API endpoints, OpenAPI schemas, and Pydantic data validation models. |
-| **`security-review`** | Security audit | Audits subprocess injections, Ray cluster port exposures, control APIs, and unsafe model pickle loading. |
-| **`refactor-safe`** | Safe refactoring | Cleans and restructures code without breaking test coverage or observable behavior via atomic commits. |
-| **`code-review`** | Code review | Reviews code readability, performance, type safety, and architectural compliance. |
-| **`dependency-audit`** | Package audit | Scans `requirements.txt` / `pyproject.toml` dependencies for known security vulnerabilities (CVEs). |
-| **`data-pipeline`** | Data pipeline design | Constructs data loading, cleaning, transformation, and preprocessing pipelines (ETL). |
-| **`git-engineering`** | General Git workflow | Manages feature branches, conventional commits, interactive rebasing, and git bisect debugging. |
-| **`documentation-writer`** | Code documentation | Writes Google-style docstrings and Sphinx/MkDocs compatible documentation suites. |
-| **`ci-cd-design`** | Automation setup | Constructs GitHub Actions CI/CD workflows for automated PyTest runs and code quality enforcement. |
+| **`code-architect`** | Yeni proje / refactor | Modüler, katmanlı, bağımlılıkları temiz ve ölçeklenebilir yazılım mimarileri tasarlar. |
+| **`function-spec-writer`** | Fonksiyon tasarımı | Fonksiyon imzası, type hints, Google-style docstring, edge case ve test case içeren `FunctionSpec` JSON üretir. |
+| **`unit-test-design`** | Unit test yazımı | PyTest ile sınır değerler (boundary values), istisnalar (exceptions) ve fixture'lar içeren birim testler yazar. |
+| **`debug-tracer`** | Hata ayıklama (yazılım) | Hipotez odaklı debug döngüsü (Gözlem → Hipotez → Test → Düzeltme) ve git bisect uygular. |
+| **`ml-experiment`** | ML deneyi kurulumu | Standart ML modelleri için train/val/test veri ayrımı, cross-validation ve pipeline kurulumu yapar. |
+| **`pytorch-training`** | PyTorch eğitim döngüsü | PyTorch GPU bellek optimizasyonu, mixed precision (AMP), gradient clipping ve checkpoint kaydetme düzenler. |
+| **`performance-profiler`** | Optimizasyon talebi | cProfile, PyTorch Profiler ve memory-profiler ile kodun darboğazlarını (bottleneck) tespit eder. |
+| **`api-design`** | API oluşturma | RESTful API endpoint'leri, OpenAPI şemaları ve Pydantic veri modelleri tasarlar. |
+| **`security-review`** | Güvenlik kontrolü | Subprocess enjeksiyonu, Ray cluster port açıkları, FastAPI kontrol API'leri ve güvensiz model pickle yükleme açıklarını denetler. |
+| **`refactor-safe`** | Yeniden yapılandırma | Test kapsamını bozmadan kodu temizler ve atomik commit'lerle refactor eder. |
+| **`code-review`** | Kod incelemesi | Kodun okunabilirlik, performans, tip güvenliği ve mimari standartlara uyumunu denetler. |
+| **`dependency-audit`** | Paket güncelleme | `requirements.txt` / `pyproject.toml` bağımlılıklarını ve bilinen güvenlik açıklarını (CVE) tarar. |
+| **`data-pipeline`** | Veri akışı tasarımı | Veri yükleme, temizleme, dönüştürme ve ön işleme akışlarını (ETL) kurar. |
+| **`git-engineering`** | Genel Git yönetimi | Feature branch, conventional commits, interactive rebasing ve git bisect süreçlerini yönetir. |
+| **`documentation-writer`** | Kod belgeleme | Google-style docstring ve Sphinx/MkDocs uyumlu kod dokümantasyonu üretir. |
+| **`ci-cd-design`** | Otomasyon kurulumu | GitHub Actions ile otomatik PyTest ve Codecov test akışı kurar. |
 
 ---
 
