@@ -37,6 +37,53 @@ Sistemimiz iki temel katmanda çalışır:
 
 ---
 
+## 🚀 Yeni Bir Projede Nasıl Kullanacaksınız?
+
+Bu sistemi **Antigravity IDE** ve **Claude Code CLI** ortamlarında zahmetsizce kullanabilirsiniz:
+
+### 🌟 Yöntem A: Antigravity IDE İle Kullanım (Sıfır Çaba — Tam Otomatik)
+Özelleştirmeler bilgisayarınızda **Global** olarak (`C:\Users\Erdemhan\.gemini\config\`) kurulu olduğu için:
+1. **İstediğiniz yeni bir klasör açın** ve Antigravity IDE'yi başlatın.
+2. Sohbet penceresine doğrudan fikrinizi anlatın veya kısayol etiketi kullanın:
+   > *"Yeni bir RL / Simülasyon projesi başlatmak istiyorum. Projemin amacı: [Fikrinizi yazın]"*  
+   > *(Veya doğrudan: `@architect yeni proje tasarlayalım`)*
+3. **Arka Planda Ne Olur?**
+   - Global 39 Skill ve anayasa otomatik yüklenir.
+   - Projenizde varsayılan `.gitignore` ve kilitli `FORMULATION.md` dosyası oluşturulur.
+   - `codebase-memory` MCP sunucusu projeyi otomatik indeksler.
+
+---
+
+### 💻 Yöntem B: Claude Code CLI İle Kullanım (Şablon Klonlama)
+1. **Repository'yi Yeni Klasörünüze Kopyalayın:**
+   ```bash
+   git clone https://github.com/Erdemhan/Experimental-Skills.git yeni-projem
+   cd yeni-projem
+   ```
+2. **Kendi Git Repository'nizi Bağlayın:**
+   ```bash
+   # Windows PowerShell'de eski .git klasörünü temizleyin:
+   Remove-Item -Path .git -Recurse -Force
+   git init
+   ```
+3. **Claude Code'da Başlatın:**
+   ```bash
+   claude
+   ```
+   Sohbette: *"Yeni projemizi mimari olarak tasarlayalım."*
+
+---
+
+### 💡 `@tag` Kullanmak Zorunlu mu? (Esnek Kullanım)
+- **HAYIR, ZORUNLU DEĞİLDİR!** `@architect`, `@worker-coder` gibi etiketler sadece isterseniz kullanabileceğiniz kısayollardır.
+- Ne yapmak istediğinizi **Türkçe doğal dilinizle anlatmanız yeterlidir.** Sistem arka planda doğru ajanı ve skill'i otomatik tespit edip çalıştırır:
+  - *"Sıfırdan mimari tasarlayalım"* ──► Otomatik `@architect` devrededir.
+  - *"Şu koddaki hatayı bulup çözelim"* ──► Otomatik `@worker-coder`, `@unit-tester` ve `research-debug` devrededir.
+  - *"Deneyleri 5 seed ile koşturalım"* ──► Otomatik `@experiment-runner` ve `empirical-rigor` devrededir.
+  - *"Sonuçlardan LaTeX makale üret"* ──► Otomatik `@paper-writer` ve `latex-bibtex-manager` devrededir.
+
+---
+
 ## 📐 FORMULATION.md (Akademik Formülasyon Kütüğü)
 
 Akademik projelerde matematiksel denklemler, semboller, teorik açıklamalar ve hiperparametre kaynakları `.claude/context/FORMULATION.md` dosyasında tutulur:
@@ -55,17 +102,6 @@ Akademik projelerde matematiksel denklemler, semboller, teorik açıklamalar ve 
 | `memory` | Knowledge Graph (Deney & Hipotez Hafızası) | `@context-manager`, `@experiment-runner` |
 | `sequential-thinking` | Adım Adım Mantıksal Algoritma Düşünme | `@architect`, `@module-planner` |
 | `fetch` | ArXiv & Web Doküman/Paper Çekme | `@architect`, `@paper-writer` |
-
----
-
-## 🚀 Yeni Bir Projede Şablon Kullanımı
-
-1. **Şablonu Kopyalayın**: Bu repository'yi yeni projenizin kök dizinine kopyalayın.
-2. **Otomatik Başlatma**: `@architect yeni proje tasarla` komutunu verdiğinizde:
-   - Kök dizinde `.gitignore` yoksa `.claude/templates/.gitignore` dosyasını otomatik kurar.
-   - Akademik projeyse `.claude/templates/FORMULATION.md` kütüğünü kopyalar ve kilitli tutar.
-   - Proje indeksi yoksa `codebase-memory` MCP sunucusundan `index_repository` çağrısını başlatır.
-3. **Oturum Senkronizasyonu**: Oturum açılışında `@context-manager` SQLite veritabanından (`context.db`) proje durumunu okur ve MCP indeks durumunu denetler.
 
 ---
 
@@ -144,11 +180,14 @@ Akademik projelerde matematiksel denklemler, semboller, teorik açıklamalar ve 
 skills/
 ├── CLAUDE.md                     ← Proje Anayasası (Kurallar & Hiyerarşi)
 ├── README.md                     ← Bu dosya
+├── .agents/                      ← Antigravity IDE Yerel Konfigürasyonu
+│   ├── AGENTS.md                 ← Antigravity IDE Anayasası
+│   └── skills/                   ← 39 Skill Tanımı
 ├── .claude/
 │   ├── settings.json             ← Lifecycle Hooks & MCP Server Ayarları
 │   ├── agents/                   ← 8 Ajan Tanımı (Architect, Planner, Coder vb.)
 │   ├── skills/                   ← 39 Skill Tanımı (Akademik & Kodlama)
-│   ├── hooks/                    ← Hook Scriptleri (security_gate, context_db vb.)
+│   ├── hooks/                    ← Hook Scriptleri (sync_skills, security_gate vb.)
 │   ├── context/                  ← Oturum Belleği (ARCHITECTURE.md, context.db, FORMULATION.md)
 │   └── templates/                ← Proje Şablonları (.gitignore, FORMULATION.md, git-hooks)
 ```
