@@ -6,15 +6,16 @@ Claude Code ve Antigravity IDE ortamlarında çalışan hiyerarşik çok-ajanlı
 
 ## 🏛️ Ajan Hiyerarşisi ve Çalışma Prensipleri
 
-Sistemimiz iki temel katmanda çalışır:
+Sistemimiz üç temel katmanda tanımlanmış 9 uzman ajandan oluşur:
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │ 🏛️ TASARIM & İŞLEVSELLİK KATMANI (PLAN-FIRST — KULLANICI ONAYI ZORUNLU)    │
 │                                                                             │
-│  • @architect  (Opus/Fable-5)   → Mimari karar, ADR'ler, FORMULATION.md, MCP │
-│  • @module-planner (Sonnet)     → Domain-aware (RL/Sim/ML) spec tasarımları │
-│  • @paper-writer (Sonnet)       → Akademik yazı taslağı & LaTeX outlineleri │
+│  • @architect  (Opus 4.5)     → Mimari karar, ADR'ler, FORMULATION.md, MCP   │
+│  • @module-planner (Sonnet)   → Domain-aware (RL/Sim/ML) spec tasarımları   │
+│  • @paper-writer (Sonnet)     → Akademik yazı taslağı & LaTeX outlineleri   │
+│  • @advisor-reporter (Sonnet) → Danışman hocaya özel ilerleme & sunum raporu│
 │                                                                             │
 │  👉 Kural: Tasarım ve işlevsellik kullanıcıya sunulur.                      │
 │     Siz "onaylıyorum / uygula" demediğiniz sürece spec ve dosya yazılmaz.  │
@@ -31,9 +32,75 @@ Sistemimiz iki temel katmanda çalışır:
 │                                                                             │
 │  👉 Kural: Onaylı spec dahilinde unit testler, retry'lar ve kod içi         │
 │     düzeltmeler sizi bekletmeden OTONOM yürütülür.                         │
-│     (İşlevsellik/spec değişecekse FREN basar ve size sorar).                 │
+└─────────────────────────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ 🔄 OTURUM VE DURUM YÖNETİMİ (OTOMATİK BAŞLANGIÇ)                             │
+│                                                                             │
+│  • @context-manager (Haiku)     → Oturum başında state sync & next action   │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## 🤖 Sistem Ajanları ve Görev Dağılımı (9 Ajan)
+
+Sistemimizde 3 ana katmanda çalışan 9 özel ajan tanımlanmıştır:
+
+### 📊 Ajan Özet Tablosu
+
+| Ajan | Varsayılan Model | Katman | Onay Modu | Temel Görevi |
+|---|---|---|---|---|
+| **`@architect`** | Opus 4.5 | Tasarım & Mimari | Plan-First | Sistem mimarisi, ADR'ler, `ARCHITECTURE.md`, MCP indeksleme, kilitli kütükler. |
+| **`@module-planner`** | Sonnet 4.5 | Tasarım & Spec | Plan-First | Modül ayrıştırma ve domain-aware `FunctionSpec` JSON üretimi (RL/Sim/ML). |
+| **`@paper-writer`** | Sonnet 4.5 | Akademik Yazım | Plan-First | NeurIPS/ICML/IEEE formatlarında LaTeX makale taslağı ve BibTeX yönetimi. |
+| **`@advisor-reporter`** | Sonnet 4.5 | Akademik Raporlama | Plan-First | Danışman hocaya özel haftalık ilerleme raporu ve stratejik karar sunumu. |
+| **`@worker-coder`** | Haiku 3.5 | Kod Uygulama | Otonom | `FunctionSpec` tabanlı tekil fonksiyon kodlama & PyTest (3x Haiku Tier 1 retry). |
+| **`@unit-tester`** | Sonnet 4.5 | Test & Debug | Otonom | Tier 2 hata ayıklama (3x Sonnet retry), karmaşık fixture/mocking, kullanıcı eskalasyonu. |
+| **`@integration-verifier`**| Sonnet 4.5 | Entegrasyon | Otonom | Modüller arası arayüz kontratları ve uçtan uca entegrasyon testleri. |
+| **`@experiment-runner`** | Sonnet 4.5 | Deney Yürütme | Otonom | Arka planda multi-seed RL/Simülasyon eğitimi, sessiz log takibi ve NaN tespiti. |
+| **`@context-manager`** | Haiku 3.5 | Oturum Yönetimi | Otomatik | Oturum açılışında `ARCHITECTURE.md` ve `context.db` senkronizasyonu, durum raporu. |
+
+---
+
+### 🏛️ 1. Tasarım & Planlama Katmanı (Plan-First — Kullanıcı Onayı Zorunlu)
+
+- **`@architect`** (`claude-opus-4-5`)
+  - **Görevi**: Yeni projelerin veya majör özelliklerin sistem mimarisini tasarlar, modül bağımlılıklarını belirler.
+  - **Kapsam**: `.claude/context/ARCHITECTURE.md` günceller, `.gitignore` ve kilitli `FORMULATION.md` kütüklerini ilklendirir. `codebase-memory` MCP ile projeyi indeksler (`index_repository`). Kod yazmaz.
+- **`@module-planner`** (`claude-sonnet-4-5`)
+  - **Görevi**: `@architect` tarafından üretilen modül taslaklarını tekil fonksiyon imzalarına dönüştürür.
+  - **Kapsam**: RL, Simülasyon veya Genel ML alanına özel `FunctionSpec` JSON şablonları hazırlar (docstring, tip kontratları, edge case ve birim test senaryoları).
+- **`@paper-writer`** (`claude-sonnet-4-5`)
+  - **Görevi**: Deneysel sonuçları ve teorik açıklamaları yayına hazır LaTeX dokümanlarına aktarır.
+  - **Kapsam**: NeurIPS, ICML, ICLR, IEEE veya ACM şablonlarında `.tex` bölümleri oluşturur, TeX tabloları gömer, BibTeX mükerrer atıflarını düzenler ve `@academic-integrity` kontrolü uygular.
+- **`@advisor-reporter`** (`claude-sonnet-4-5`)
+  - **Görevi**: Günlük kod süreçlerinden uzak olan akademisyen danışman/süpervizörler için üst düzey yürütme raporları hazırlar.
+  - **Kapsam**: Deney loglarını, `ARCHITECTURE.md` durumunu ve istatistiksel doğrulamaları özümseyerek haftalık ilerleme sunumları, deney detay raporları ve danışmana danışılacak stratejik karar maddeleri oluşturur.
+
+---
+
+### ⚙️ 2. Uygulama & Test Katmanı (Otonom İcra)
+
+- **`@worker-coder`** (`claude-haiku-3-5`)
+  - **Görevi**: Onaylanmış `FunctionSpec` JSON belgesine birebir uyarak tek bir fonksiyonu kodlar ve test eder.
+  - **Kapsam**: Fonksiyonu `src/` altına yazar, `tests/` altına PyTest testlerini ekler ve çalıştırır. Başarısızlık durumunda 3 defaya kadar (Tier 1 - Haiku seviyesi) otonom düzeltme dener. 3 retriedan sonra pes ederek `@unit-tester` ajanına devreder.
+- **`@unit-tester`** (`claude-sonnet-4-5`)
+  - **Görevi**: `@worker-coder` ajanının 3 Haiku denemesinde çözemediği başarısız testleri devralır (Tier 2 Eskalasyon).
+  - **Kapsam**: Hata loglarını ve traceback çıktılarını ampirik olarak inceler. 3 defaya kadar Sonnet seviyesinde otonom düzeltme veya karmaşık fixture/mocking uygular. 6 toplam deneme sonunda çözülemezse kullanıcıya `USER ESCALATION REPORT` sunar.
+- **`@integration-verifier`** (`claude-sonnet-4-5`)
+  - **Görevi**: Bütün birim fonksiyonlar tamamlandıktan sonra modüller arası entegrasyonu ve uçtan uca veri akışlarını doğrular.
+  - **Kapsam**: Modüller arası arayüz kontratlarını denetler, `pytest tests/integration/` testlerini çalıştırır ve uyumluluk raporu (`Integration Verification Report`) üretir.
+- **`@experiment-runner`** (`claude-sonnet-4-5`)
+  - **Görevi**: Uzun süreli arka plan deneylerini (RL multi-seed eğitimleri, simülasyon parametre taramaları) koşturur.
+  - **Kapsam**: Arka planda (`nohup`/`tmux`/`Ray`/`SLURM`) eğitim başlatır, donanım/CUDA/PyTorch çevresel meta verilerini kaydeder, terminali sürekli poll etmeden log dosyalarını sessizce izler ve NaN/patlayan gradyan tespitinde erken durdurma yapar.
+
+---
+
+### 🔄 3. Oturum & Durum Yönetimi Katmanı
+
+- **`@context-manager`** (`claude-haiku-3-5`)
+  - **Görevi**: Her çalışma oturumunun başlangıcında projenin mevcut durumunu senkronize eder.
+  - **Kapsam**: `ARCHITECTURE.md`, SQLite `context.db` görev veritabanı ve `codebase-memory` MCP indeks durumunu okur; aktif/tamamlanan modülleri özetleyen bir açılış raporu ve önerilen sonraki adımı kullanıcıya sunar.
 
 ---
 
