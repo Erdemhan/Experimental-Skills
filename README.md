@@ -48,7 +48,7 @@ Bu sistemi **Antigravity IDE** ve **Claude Code CLI** ortamlarında zahmetsizce 
    > *"Yeni bir RL / Simülasyon projesi başlatmak istiyorum. Projemin amacı: [Fikrinizi yazın]"*  
    > *(Veya doğrudan: `@architect yeni proje tasarlayalım`)*
 3. **Arka Planda Ne Olur?**
-   - Global 45 Skill ve anayasa otomatik yüklenir.
+   - Global 46 Skill ve anayasa otomatik yüklenir.
    - Projenizde varsayılan `.gitignore` ve kilitli `FORMULATION.md` dosyası oluşturulur.
    - `codebase-memory` MCP sunucusu projeyi otomatik indeksler.
 
@@ -84,7 +84,7 @@ Devam eden, kod yazılmış **mevcut bir projenize** bu sistemi entegre etmek so
    > *"Mevcut projemizin mimarisini ve kod yapısını inceleyip geliştirmeye devam edelim."*  
    > *(Veya: `@architect mevcut projeyi analiz edelim`)*
 3. **Sistem Ne Yapar?**
-   - Global 45 Skill ve anayasa anında aktifleşir.
+   - Global 46 Skill ve anayasa anında aktifleşir.
    - `codebase-memory` MCP sunucusu mevcut kod bağımlılıklarını ve AST yapısını haritalandırır (`index_repository`).
    - `@architect` mevcut kod yapısını bozmadan mimari haritayı (`ARCHITECTURE.md`) çıkarır ve onayınızla yeni özellikleri planlar.
 
@@ -129,9 +129,9 @@ Akademik projelerde matematiksel denklemler, semboller, teorik açıklamalar ve 
 
 ---
 
-## 📚 Detaylı Skills Kütüphanesi Rehberi (45 Skill)
+## 📚 Detaylı Skills Kütüphanesi Rehberi (46 Skill)
 
-### 1. 🎓 Akademik Araştırma & Metodoloji Skill'leri (12 Skill)
+### 1. 🎓 Akademik Araştırma & Metodoloji Skill'leri (13 Skill)
 
 | Skill | Tetikleyici | Detaylı Açıklama |
 |---|---|---|
@@ -147,6 +147,7 @@ Akademik projelerde matematiksel denklemler, semboller, teorik açıklamalar ve 
 | **`latex-bibtex-manager`** | LaTeX şablonu, BibTeX | NeurIPS, ICML, ICLR, IEEE ve ACM LaTeX şablonlarını derler; BibTeX mükerrer atıflarını temizler ve `latexmk` hatalarını çözümler. |
 | **`dataset-documentation`** | Veri seti kartı | *Datasheets for Datasets* standardında veri toplama, etiketleme ve kullanım kısıtlarını içeren belge hazırlar. |
 | **`replication-package`** | Çalışma paylaşımı | Zenodo ve GitHub için tek komutluk `reproduce_all.py` scripti ve bağımlılıklarla tam tekrarlanabilirlik paketi oluşturur. |
+| **`advisor-report-generator`** | Danışman raporu, ilerleme sunumu | Konuyu ve deney detaylarını bilmeyen danışman hocasına akademik, dürüst ve kararlar içeren ilerleme raporları sunar. |
 
 ---
 
@@ -212,11 +213,11 @@ skills/
 ├── README.md                     ← Bu dosya
 ├── .agents/                      ← Antigravity IDE Yerel Konfigürasyonu
 │   ├── AGENTS.md                 ← Antigravity IDE Anayasası
-│   └── skills/                   ← 45 Skill Tanımı
+│   └── skills/                   ← 46 Skill Tanımı
 ├── .claude/
 │   ├── settings.json             ← Lifecycle Hooks & MCP Server Ayarları
-│   ├── agents/                   ← 8 Ajan Tanımı (Architect, Planner, Coder vb.)
-│   ├── skills/                   ← 45 Skill Tanımı (Akademik & Kodlama)
+│   ├── agents/                   ← 9 Ajan Tanımı (Architect, Planner, Coder vb.)
+│   ├── skills/                   ← 46 Skill Tanımı (Akademik & Kodlama)
 │   ├── hooks/                    ← Hook Scriptleri (sync_skills, security_gate vb.)
 │   ├── context/                  ← Oturum Belleği (ARCHITECTURE.md, context.db, FORMULATION.md)
 │   └── templates/                ← Proje Şablonları (.gitignore, FORMULATION.md, git-hooks)
