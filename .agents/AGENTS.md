@@ -18,6 +18,7 @@ This project uses a **3-tier agent hierarchy**. Select the appropriate agent for
 | Cross-module integration testing & contract verification | `@integration-verifier` |
 | Long-running experiment execution, sweep tracking & monitoring | `@experiment-runner` |
 | Academic writing, LaTeX formatting & BibTeX compilation | `@paper-writer` |
+| Academic advisor progress reporting & executive briefing | `@advisor-reporter` |
 | Session startup, context sync & state report | `@context-manager` |
 
 ### Golden Rule
