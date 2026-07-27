@@ -1,0 +1,23 @@
+# SQLite Database & Local Context State
+.claude/context/*.db
+.claude/context/*.db-wal
+.claude/context/*.db-shm
+.claude/context/sync.log
+.agents/context/*.db
+.agents/context/*.db-wal
+.agents/context/*.db-shm
+
+# Python & Caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Logs & Environment
+*.log
+.env
+.venv/
+env/
+venv/

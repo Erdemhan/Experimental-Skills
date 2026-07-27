@@ -18,10 +18,41 @@ from pathlib import Path
 
 TASK_QUEUE_PATH = Path(".claude/context/task-queue.json")
 SYNC_LOG_PATH = Path(".claude/context/sync.log")
+CLAUDE_FORMULATION = Path(".claude/context/FORMULATION.md")
+AGENTS_FORMULATION = Path(".agents/context/FORMULATION.md")
+
+
+def sync_formulation_file() -> None:
+    """Sync FORMULATION.md across .claude/context/ and .agents/context/ for cross-platform compatibility."""
+    try:
+        if CLAUDE_FORMULATION.exists() and not AGENTS_FORMULATION.exists():
+            AGENTS_FORMULATION.parent.mkdir(parents=True, exist_ok=True)
+            AGENTS_FORMULATION.write_text(CLAUDE_FORMULATION.read_text(encoding="utf-8"), encoding="utf-8")
+        elif AGENTS_FORMULATION.exists() and not CLAUDE_FORMULATION.exists():
+            CLAUDE_FORMULATION.parent.mkdir(parents=True, exist_ok=True)
+            CLAUDE_FORMULATION.write_text(AGENTS_FORMULATION.read_text(encoding="utf-8"), encoding="utf-8")
+    except Exception:
+        pass
+
+
+def ensure_context_env() -> None:
+    """Ensure context DB and formulation registry are auto-initialized if absent."""
+    db_path = Path(".claude/context/context.db")
+    if not db_path.exists():
+        try:
+            hooks_dir = Path(".claude/hooks")
+            if str(hooks_dir.resolve()) not in sys.path:
+                sys.path.insert(0, str(hooks_dir.resolve()))
+            import context_db
+            context_db.initialize_db()
+        except Exception:
+            pass
+    sync_formulation_file()
 
 
 def read_active_task() -> str | None:
     """Check active in-progress tasks from SQLite database or fallback gracefully."""
+    ensure_context_env()
     db_path = Path(".claude/context/context.db")
     if not db_path.exists():
         return None

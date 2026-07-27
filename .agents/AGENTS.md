@@ -44,6 +44,7 @@ This project uses a **3-tier agent hierarchy**. Select the appropriate agent for
   - Every code modification MUST be justified by an explicit error log or a failing test.
 - Every function requires a corresponding unit test before completion.
 - Pull requests / commits are not opened until tests pass.
+- **Git & .gitignore Check**: Always check `.gitignore` (via `git check-ignore` or filtering `git status`) before staging (`git add`) or committing (`git commit`). Never attempt to stage, commit, or process files ignored by `.gitignore`.
 - **Research Code Debugging (Critical)**:
   - When fixing a bug in an academic research project/code, **the `@research-debug` skill MUST be invoked first**.
   - **Academic Integrity Boundary**: Fixes must not introduce data leakage or violate theoretical assumptions.
@@ -66,7 +67,8 @@ This project uses a **3-tier agent hierarchy**. Select the appropriate agent for
 ## Academic Research Rules
 - Every claim must be supported by citations — unreferenced claims are rejected.
 - **Formulation & Parameters Registry Rule (`FORMULATION.md`)**:
-  - Academic equations, symbols, explanations, and parameter sources are maintained in `.claude/context/FORMULATION.md`.
+  - Academic equations, symbols, explanations, and parameter sources are maintained in `.claude/context/FORMULATION.md` (or `.agents/context/FORMULATION.md`).
+  - Agents MUST dynamically resolve `FORMULATION.md` across both `.claude/context/` and `.agents/context/` locations to ensure full cross-platform compatibility between Claude Code and Antigravity IDE.
   - This file is **User-Locked**; NO AGENT may modify `FORMULATION.md` content, equations, or parameter values without explicit, direct user approval.
   - If code conflicts with `FORMULATION.md`, the code must be fixed; the registry remains untouched.
 - **🌐 Heterogeneous Environment Awareness**:
@@ -80,6 +82,7 @@ This project uses a **3-tier agent hierarchy**. Select the appropriate agent for
 
 ## Task & Context Tracking
 - `context.db` (SQLite) is queried at session startup via `@context-manager` or `python .claude/hooks/context_db.py summary`.
+- **Session Startup & Auto-Setup**: At session initialization, `@context-manager` automatically checks if `context.db` exists (running `python .claude/hooks/context_db.py init` if missing) and checks MCP `codebase-memory` server index status, triggering repository indexing if uninitialized.
 - `ARCHITECTURE.md` is updated after every architectural decision.
 - `@context-manager` runs automatically at session initialization.
 

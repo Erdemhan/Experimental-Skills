@@ -58,3 +58,19 @@ git bisect bad HEAD
 git bisect good v1.0.0
 git bisect run pytest tests/test_failing.py
 ```
+
+---
+
+## 4. Pre-Flight `.gitignore` Verification
+
+> **Mandatory Rule**: Before executing `git add` or `git commit`, ALWAYS check if target files are ignored by `.gitignore`.
+
+```bash
+# Check if a specific file is ignored before staging
+git check-ignore -v <path/to/file>
+
+# Check untracked files while excluding ignored files
+git status -u
+
+# Do NOT attempt to stage or commit ignored files, temporary build outputs, SQLite databases (.db), or logs.
+```
