@@ -196,6 +196,21 @@ Akademik projelerde matematiksel denklemler, semboller, teorik açıklamalar ve 
 
 ---
 
+## ⚙️ Otomatik Sistem Altyapısı & Lifecycle Hooks (6 Eklenti)
+
+`.claude/settings.json` konfigürasyonunda tanımlanmış ve `.claude/hooks/` dizininde yer alan 6 otomatik Python eklentisi, sistemin güvenliğini, kod kalitesini ve oturum belleğini otonom olarak yönetir:
+
+| Eklenti Script | Hook Tipi | Temel İşlevi |
+|---|---|---|
+| **`security_gate.py`** | `PreToolUse` | Yıkıcı komutları (`rm -rf`, disk format, fork bomb, force push) engelleyen güvenlik kapısı. |
+| **`context_db.py`** | `CLI / Lifecycle` | SQLite WAL veritabanı (`context.db`) ile eşzamanlı ve ACID garantili oturum belleği takibi. |
+| **`sync_skills.py`** | `CLI / Utility` | Yerel `.claude/skills/`, `.agents/skills/` ve global Antigravity config senkronizasyonu. |
+| **`test_watcher.py`** | `PostToolUse` | PyTest çıktılarını otomatik parse edip başarısız testleri ajana raporlayan test gözlemcisi. |
+| **`auto_format.py`** | `PostToolUse` | Kaydedilen kod dosyalarını otomatik formatlayan script (`black`, `prettier`, `json.tool`). |
+| **`context_sync.py`** | `Pre/PostToolUse` | Araç çağrılarında SQLite veritabanındaki aktif görev durumunu ajana anlık hatırlatan senkronizatör. |
+
+---
+
 ## 📚 Detaylı Skills Kütüphanesi Rehberi (46 Skill)
 
 ### 1. 🎓 Akademik Araştırma & Metodoloji Skill'leri (13 Skill)
