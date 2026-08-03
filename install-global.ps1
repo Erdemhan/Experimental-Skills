@@ -31,6 +31,43 @@ Write-Host "Kaynak : $Source"
 Write-Host "Hedef  : $Target"
 Write-Host ''
 
+# ---------------------------------------------------------------
+# 1. Calisan Python yorumlayicisini bul
+#
+# Get-Command yetmez: Windows'ta python3.exe cogu zaman Microsoft Store
+# stub'idir - PATH'te gorunur, calistirilinca "Python bulunamadi" der.
+# Bu yuzden her adayi gercekten calistirip dogruluyoruz.
+# ---------------------------------------------------------------
+function Resolve-Python {
+    foreach ($candidate in @('python', 'python3', 'py')) {
+        if (-not (Get-Command $candidate -ErrorAction SilentlyContinue)) { continue }
+        try {
+            $exe = & $candidate -c 'import sys; print(sys.executable)' 2>$null
+            if ($LASTEXITCODE -eq 0 -and $exe -and (Test-Path $exe)) {
+                return [string]$exe
+            }
+        }
+        catch { }
+    }
+    return $null
+}
+
+Write-Host 'Python yorumlayicisi araniyor...' -ForegroundColor Cyan
+$PythonExe = Resolve-Python
+
+if (-not $PythonExe) {
+    Write-Host '  [!] Calisan Python bulunamadi. Hooklar calismaz.' -ForegroundColor Red
+    Write-Host '      Python kurun ya da conda ortaminizi aktiflestirip tekrar deneyin.' -ForegroundColor Red
+    if (-not $DryRun) { throw 'Python bulunamadi - kurulum durduruldu.' }
+}
+else {
+    Write-Host "  [OK] $PythonExe" -ForegroundColor Green
+}
+Write-Host ''
+
+# ---------------------------------------------------------------
+# 2. Dosyalari kur
+# ---------------------------------------------------------------
 function Install-Entry {
     param(
         [Parameter(Mandatory)][string]$From,
@@ -72,7 +109,29 @@ if ($DryRun) {
     exit 0
 }
 
-# Kaynaktan tasinmis olabilecek derleme artiklarini temizle
+# ---------------------------------------------------------------
+# 3. settings.json icindeki yorumlayiciyi gercek yola sabitle
+# ---------------------------------------------------------------
+$SettingsPath = Join-Path $Target 'settings.json'
+$settings = Get-Content $SettingsPath -Raw | ConvertFrom-Json
+$pyQuoted = '"' + ($PythonExe -replace '\\', '/') + '"'
+$patched = 0
+
+foreach ($event in @('PreToolUse', 'PostToolUse')) {
+    foreach ($matcher in $settings.hooks.$event) {
+        foreach ($h in $matcher.hooks) {
+            if ($h.command -match '^python3?\s') {
+                $h.command = $h.command -replace '^python3?\s', "$pyQuoted "
+                $patched++
+            }
+        }
+    }
+}
+
+$settings | ConvertTo-Json -Depth 12 | Set-Content $SettingsPath -Encoding UTF8
+Write-Host "settings.json: $patched hook komutu $pyQuoted ile guncellendi." -ForegroundColor Green
+
+# Derleme artiklarini temizle
 Get-ChildItem -Path $Target -Directory -Recurse -Filter '__pycache__' -ErrorAction SilentlyContinue |
     ForEach-Object { Remove-Item -LiteralPath $_.FullName -Recurse -Force -ErrorAction SilentlyContinue }
 
@@ -80,56 +139,51 @@ Write-Host 'Kurulum tamam.' -ForegroundColor Green
 Write-Host ''
 
 # ---------------------------------------------------------------
-# Duman testi
+# 4. Duman testi
 # ---------------------------------------------------------------
 Write-Host 'Dogrulama:' -ForegroundColor Cyan
 
-$pythonCmd = $null
-foreach ($c in @('python3', 'python', 'py')) {
-    if (Get-Command $c -ErrorAction SilentlyContinue) { $pythonCmd = $c; break }
-}
+$gate = Join-Path $Target 'hooks\security_gate.py'
 
-if (-not $pythonCmd) {
-    Write-Host '  [!] Python PATH uzerinde bulunamadi - hooklar calismaz.' -ForegroundColor Red
+'{"tool_input":{"command":"rm -rf /"}}' | & $PythonExe $gate 2>&1 | Out-Null
+if ($LASTEXITCODE -eq 2) {
+    Write-Host '  [OK] security_gate.py yikici komutu engelledi (exit 2)' -ForegroundColor Green
 }
 else {
-    Write-Host "  [i] Python yorumlayici: $pythonCmd"
-    if ($pythonCmd -ne 'python3') {
-        Write-Host '  [!] settings.json icinde python3 yaziyor ama sistemde o ad yok.' -ForegroundColor Yellow
-        Write-Host "      settings.json icindeki python3 ifadelerini $pythonCmd ile degistirin." -ForegroundColor Yellow
-    }
-
-    $gate = Join-Path $Target 'hooks\security_gate.py'
-
-    # yikici komut engellenmeli (exit 2)
-    '{"tool_input":{"command":"rm -rf /"}}' | & $pythonCmd $gate 2>&1 | Out-Null
-    if ($LASTEXITCODE -eq 2) {
-        Write-Host '  [OK] security_gate.py yikici komutu engelledi (exit 2)' -ForegroundColor Green
-    }
-    else {
-        Write-Host "  [!] security_gate.py beklenen exit 2 yerine $LASTEXITCODE dondurdu" -ForegroundColor Red
-    }
-
-    # zararsiz komut gecmeli (exit 0)
-    '{"tool_input":{"command":"pytest -q"}}' | & $pythonCmd $gate 2>&1 | Out-Null
-    if ($LASTEXITCODE -eq 0) {
-        Write-Host '  [OK] security_gate.py zararsiz komuta izin verdi (exit 0)' -ForegroundColor Green
-    }
-    else {
-        Write-Host "  [!] security_gate.py zararsiz komutu engelledi (exit $LASTEXITCODE)" -ForegroundColor Red
-    }
+    Write-Host "  [!] security_gate.py beklenen exit 2 yerine $LASTEXITCODE dondurdu" -ForegroundColor Red
 }
 
-# settings.json gecerli JSON mu
+'{"tool_input":{"command":"pytest -q"}}' | & $PythonExe $gate 2>&1 | Out-Null
+if ($LASTEXITCODE -eq 0) {
+    Write-Host '  [OK] security_gate.py zararsiz komuta izin verdi (exit 0)' -ForegroundColor Green
+}
+else {
+    Write-Host "  [!] security_gate.py zararsiz komutu engelledi (exit $LASTEXITCODE)" -ForegroundColor Red
+}
+
+# context_sync opt-in korumasi: bos dizinde hicbir dosya yaratmamali
+$tmp = Join-Path ([System.IO.Path]::GetTempPath()) ("claude-hook-test-" + [guid]::NewGuid().ToString('N').Substring(0, 8))
+New-Item -ItemType Directory -Path $tmp -Force | Out-Null
+Push-Location $tmp
+'{"tool_name":"Write"}' | & $PythonExe (Join-Path $Target 'hooks\context_sync.py') pre 2>&1 | Out-Null
+$leaked = @(Get-ChildItem -Path $tmp -Recurse -Force -ErrorAction SilentlyContinue)
+Pop-Location
+Remove-Item -LiteralPath $tmp -Recurse -Force -ErrorAction SilentlyContinue
+if ($leaked.Count -eq 0) {
+    Write-Host '  [OK] context_sync.py opt-in korumasi calisiyor (dosya yaratmadi)' -ForegroundColor Green
+}
+else {
+    Write-Host "  [!] context_sync.py bos dizinde $($leaked.Count) dosya yaratti" -ForegroundColor Red
+}
+
 try {
-    $null = Get-Content (Join-Path $Target 'settings.json') -Raw | ConvertFrom-Json
+    $null = Get-Content $SettingsPath -Raw | ConvertFrom-Json
     Write-Host '  [OK] settings.json gecerli JSON' -ForegroundColor Green
 }
 catch {
     Write-Host '  [!] settings.json bozuk JSON' -ForegroundColor Red
 }
 
-# beklenen dosyalar yerinde mi
 $expected = @(
     'settings.json', 'CLAUDE.md',
     'agents\architect.md', 'agents\worker-coder.md',
