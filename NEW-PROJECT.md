@@ -15,7 +15,7 @@ eklemen gereken **harici şeyler** aşağıdakilerden ibaret.
 | **İzinler** (pytest, git, black, ruff, mypy, latexmk) | `~/.claude/settings.json` — izinler katmanlar arası **birleşir** |
 | **Genel kurallar** (ajan hiyerarşisi, kodlama standartları, token bütçesi, akademik kurallar) | `~/.claude/CLAUDE.md` |
 | **Template'ler** (.gitignore, pre-commit, git-hooks, FORMULATION iskeleti) | `~/.claude/templates/` |
-| **MCP sunucuları** (memory, sequential-thinking) | `claude mcp add -s user` ile bir kere eklenir |
+| **MCP sunucuları** (memory, sequential-thinking, codebase-memory-mcp) | `claude mcp add -s user` ile bir kere eklenir |
 
 ---
 

@@ -144,12 +144,16 @@ function Invoke-Verification {
     Write-Host '  claude mcp add -s user memory -- npx -y @modelcontextprotocol/server-memory'
     Write-Host '  claude mcp add -s user sequential-thinking -- npx -y @modelcontextprotocol/server-sequential-thinking'
     Write-Host ''
+    Write-Host '  # codebase-memory-mcp: architect / context-manager / worker-coder ajanlarinin'
+    Write-Host '  # kullandigi kod grafigi sunucusu (index_repository, search_code, trace_path,'
+    Write-Host '  # get_architecture, search_graph). Once binary kurulur:'
+    Write-Host '  npm install -g codebase-memory-mcp        # ya da: pip install codebase-memory-mcp'
+    Write-Host '  claude mcp add -s user codebase-memory-mcp -- codebase-memory-mcp'
+    Write-Host ''
     Write-Host 'Ardindan: claude mcp list'
     Write-Host ''
-    Write-Host 'Onerilmeyenler:' -ForegroundColor DarkGray
-    Write-Host '  codebase-memory : @modelcontextprotocol/server-codebase-memory diye bir paket yok.' -ForegroundColor DarkGray
-    Write-Host '                    Kod arama icin Claude Code yerlesik Grep/Glob araclarini kullanir.' -ForegroundColor DarkGray
-    Write-Host '  fetch           : uvx gerektirir ve Claude Code zaten yerlesik WebFetch tasir.' -ForegroundColor DarkGray
+    Write-Host 'Onerilmeyen:' -ForegroundColor DarkGray
+    Write-Host '  fetch : uvx gerektirir ve Claude Code zaten yerlesik WebFetch tasir.' -ForegroundColor DarkGray
 }
 
 function Install-Entry {

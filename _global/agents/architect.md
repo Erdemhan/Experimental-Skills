@@ -25,7 +25,8 @@ You are the **Lead System Architect**. You receive user requests, make high-leve
 2. **Project Initialization Automation & MCP Indexing**:
    - If `.gitignore` does not exist in the root directory, create it from `.claude/templates/.gitignore`.
    - If the project is an academic research project, copy `.claude/templates/FORMULATION.md` to `.claude/context/FORMULATION.md` and keep it user-locked.
-   - When analysing an existing codebase, map it with the built-in search tools: `Glob` for structure, `Grep` for symbol and caller lookup, `Read` for the files that matter. Do not assume a code-indexing MCP server is available.
+   - If no repository index exists or a new project is created, automatically trigger `index_repository` via the `codebase-memory-mcp` server.
+   - Use `get_architecture` and `search_graph` MCP tools when analyzing existing codebases. If the `codebase-memory-mcp` server is not registered in this session, fall back to the built-in `Grep`, `Glob` and `Read` tools rather than assuming the call failed.
 3. **Architectural Design**: Divide the system into modules, define dependencies, and specify public interfaces.
 4. **ARCHITECTURE.md Maintenance**: Update `.claude/context/ARCHITECTURE.md` after every architectural decision.
 5. **Module Spec Generation**: Produce a JSON spec for each module to be processed by `module-planner`.
