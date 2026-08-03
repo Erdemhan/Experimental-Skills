@@ -141,12 +141,15 @@ function Invoke-Verification {
     Write-Host ''
     Write-Host 'MCP sunuculari settings.json uzerinden YUKLENMEZ.' -ForegroundColor Yellow
     Write-Host 'Bir kereye mahsus sunlari calistirin:' -ForegroundColor Yellow
-    Write-Host '  claude mcp add -s user codebase-memory -- npx -y @modelcontextprotocol/server-codebase-memory'
     Write-Host '  claude mcp add -s user memory -- npx -y @modelcontextprotocol/server-memory'
     Write-Host '  claude mcp add -s user sequential-thinking -- npx -y @modelcontextprotocol/server-sequential-thinking'
-    Write-Host '  claude mcp add -s user fetch -- uvx mcp-server-fetch'
     Write-Host ''
     Write-Host 'Ardindan: claude mcp list'
+    Write-Host ''
+    Write-Host 'Onerilmeyenler:' -ForegroundColor DarkGray
+    Write-Host '  codebase-memory : @modelcontextprotocol/server-codebase-memory diye bir paket yok.' -ForegroundColor DarkGray
+    Write-Host '                    Kod arama icin Claude Code yerlesik Grep/Glob araclarini kullanir.' -ForegroundColor DarkGray
+    Write-Host '  fetch           : uvx gerektirir ve Claude Code zaten yerlesik WebFetch tasir.' -ForegroundColor DarkGray
 }
 
 function Install-Entry {

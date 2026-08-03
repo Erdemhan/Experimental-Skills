@@ -53,7 +53,9 @@ chmod +x "$DST"/hooks/*.py 2>/dev/null || true
 echo "Kurulum tamam."
 echo
 echo "MCP sunucuları settings.json'dan OKUNMUYOR. Bir kereye mahsus:"
-echo '  claude mcp add -s user codebase-memory -- npx -y @modelcontextprotocol/server-codebase-memory'
 echo '  claude mcp add -s user memory -- npx -y @modelcontextprotocol/server-memory'
 echo '  claude mcp add -s user sequential-thinking -- npx -y @modelcontextprotocol/server-sequential-thinking'
-echo '  claude mcp add -s user fetch -- uvx mcp-server-fetch'
+echo
+echo 'Onerilmeyenler:'
+echo '  codebase-memory : @modelcontextprotocol/server-codebase-memory diye bir paket yok.'
+echo '  fetch           : uvx gerektirir; Claude Code zaten yerlesik WebFetch tasir.'

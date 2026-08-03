@@ -94,7 +94,7 @@ This project uses a **3-tier agent hierarchy**. Select the appropriate agent for
 
 ## Task & Context Tracking
 - `context.db` (SQLite) is queried at session startup via `@context-manager` or `python .claude/hooks/context_db.py summary`.
-- **Session Startup & Auto-Setup**: At session initialization, `@context-manager` automatically checks if `context.db` exists (running `python .claude/hooks/context_db.py init` if missing) and checks MCP `codebase-memory` server index status, triggering repository indexing if uninitialized.
+- **Session Startup & Auto-Setup**: At session initialization, `@context-manager` automatically checks if `context.db` exists, running `python .claude/hooks/context_db.py init` if missing.
 - `ARCHITECTURE.md` is updated after every architectural decision.
 - `@context-manager` runs automatically at session initialization.
 
