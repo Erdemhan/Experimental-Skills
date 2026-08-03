@@ -54,8 +54,21 @@ This project uses a **3-tier agent hierarchy**. Select the appropriate agent for
   - **Formal Methodology**: When implementing algorithms, mathematical models, or architectures, ad-hoc, informal, or hacky shortcuts are strictly prohibited. Agents MUST strictly adhere to the most formal, mathematically rigorous standards from peer-reviewed literature and official specifications.
   - **Latest Stable Versions**: Deprecated APIs, obsolete syntax, or legacy package patterns (e.g. legacy Gym instead of `gymnasium`, outdated PyTorch autograd patterns instead of `torch.amp` / `torch.compile`, deprecated NumPy scalar types) are forbidden. Agents MUST target the latest stable releases and official current API specifications.
 - **⚡ Token Budgeting & Context Isolation Rule**:
-  - **Subagent Context Isolation**: Subagents (`worker-coder`, `unit-tester`) MUST be invoked with minimal isolated context (`FunctionSpec` JSON and error tracebacks) rather than dumping full conversation history.
-  - **Log & File Pruning**: Full file viewing for files > 300 lines or reading full 1000-line log files is forbidden. Use targeted `view_file` line ranges and traceback extraction to preserve context window attention.
+  - **Subagent Context Isolation**: Subagents (`worker-coder`, `unit-tester`) MUST be invoked with minimal isolated context — the `FunctionSpec` JSON, the error traceback, and the relevant AST class definitions only — rather than dumping full conversation history.
+  - **Log Pruning**: Never read full 1000-line test logs or training outputs. Use `grep`/`tail` patterns to extract ONLY the exact failure traceback lines.
+  - **AST Chunk Viewing & Targeted Edits**: Full file viewing for files > 300 lines is forbidden when making a local change. Use precise `StartLine`/`EndLine` ranges, and prefer non-contiguous multi-edit operations over rewriting whole files.
+  - **Checklist**: Is full-file viewing avoided for files > 300 lines? Are tracebacks extracted via minimal line ranges instead of full logs? Are subagent prompts constrained strictly to `FunctionSpec` and target snippets?
+- **🔁 Self-Consistency & Cross-Agent Critique Rule**:
+  - **Critique Isolation**: The verifying agent MUST act as an independent reviewer and question the generator agent's assumptions rather than confirming them. A verifier that agrees by default provides no signal.
+  - **Edge-Case & Boundary Audit**: Before any implementation is declared `Done`, verify zero values, NaN/Inf bounds, empty collections, out-of-bounds indices, and disconnection/timeout states.
+  - **Self-Correction Protocol**: If the verifier finds a logic flaw or spec mismatch, control returns to `worker-coder` with an explicit critique report — never straight to user sign-off.
+  - **Verification Audit Matrix**:
+
+    | Category | Check Item | Action on Failure |
+    |---|---|---|
+    | Contract | Does output type match the `FunctionSpec` type hints exactly? | Reject code, re-specify |
+    | Boundary | Are 0, None, NaN, Inf handled and verified? | Add boundary guard clause |
+    | Concurrency | Are thread synchronisation and lock leaks audited? | Enforce explicit lock release |
 - Every function must have a `FunctionSpec` JSON before implementation.
 - Code without unit tests is NEVER considered `Done`.
 - Type annotations (type hints) are mandatory.
