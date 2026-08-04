@@ -116,6 +116,14 @@ function Invoke-Verification {
         else {
             Write-Host "  [!] $($bare.Count) hook komutu hala cikplak 'python3' kullaniyor" -ForegroundColor Red
         }
+
+        $unresolved = @($cmds | Where-Object { $_ -match '<CLAUDE_HOME>' })
+        if ($unresolved.Count -eq 0) {
+            Write-Host '  [OK] <CLAUDE_HOME> yer tutucusunun tamami cozumlenmis' -ForegroundColor Green
+        }
+        else {
+            Write-Host "  [!] $($unresolved.Count) hook komutunda <CLAUDE_HOME> hala cozumlenmemis" -ForegroundColor Red
+        }
     }
     catch {
         Write-Host '  [!] settings.json bozuk JSON' -ForegroundColor Red
@@ -243,22 +251,30 @@ if ($DryRun) {
 # 3. settings.json icindeki yorumlayiciyi mutlak yola sabitle
 # ---------------------------------------------------------------
 $settings = Get-Content $SettingsPath -Raw | ConvertFrom-Json
-$pyQuoted = '"' + ($PythonExe -replace '\\', '/') + '"'
+$pyQuoted  = '"' + ($PythonExe -replace '\\', '/') + '"'
+$targetFwd = $Target -replace '\\', '/'
 $patched = 0
 
+# Sablon iki yer tutucu tasir: <CLAUDE_HOME> (hook dosyasinin gercek konumu,
+# makineden makineye degisir) ve ciplak 'python3' (calisan yorumlayici).
+# Ikisini de burada, kurulum anindaki gercek degerlerle cozuyoruz - boylece
+# sablon hicbir kullanici adi/makine varsayimi tasimaz ve baska bir bilgisayara
+# ya da kullaniciya kopyalandiginda da dogru calisir.
 foreach ($event in @('PreToolUse', 'PostToolUse')) {
     foreach ($matcher in $settings.hooks.$event) {
         foreach ($h in $matcher.hooks) {
+            $original = $h.command
+            $h.command = $h.command -replace '<CLAUDE_HOME>', $targetFwd
             if ($h.command -match '^python3?\s') {
                 $h.command = $h.command -replace '^python3?\s', "$pyQuoted "
-                $patched++
             }
+            if ($h.command -ne $original) { $patched++ }
         }
     }
 }
 
 $settings | ConvertTo-Json -Depth 12 | Set-Content $SettingsPath -Encoding UTF8
-Write-Host "settings.json: $patched hook komutu $pyQuoted ile guncellendi." -ForegroundColor Green
+Write-Host "settings.json: $patched hook komutu guncellendi (yorumlayici: $pyQuoted, hedef: $targetFwd)." -ForegroundColor Green
 
 # Derleme artiklarini temizle
 Get-ChildItem -Path $Target -Directory -Recurse -Filter '__pycache__' -ErrorAction SilentlyContinue |

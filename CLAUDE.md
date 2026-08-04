@@ -1,104 +1,44 @@
-# Project Constitution — Agentic AI & Skills System
+# Bu Repo Ne İşe Yarıyor
 
-## Overview
-This project contains a 3-tier hierarchical multi-agent system, Model Context Protocol (MCP) server configurations, and a comprehensive skills library for Claude Code.
+Bu repo bir araştırma projesi **değil** — `~/.claude` global kurulumunun kaynak
+paketi. İçindeki her şey (`_global/`) `install-global.ps1` / `install-global.sh`
+ile herhangi bir bilgisayarda `~/.claude` altına kurulur ve o andan itibaren
+**tüm projelerde** otomatik geçerli olur (ajan hiyerarşisi, hook'lar, izinler,
+akademik/mühendislik kuralları — bkz. `_global/CLAUDE.md`).
 
----
+Yeni bir bilgisayara geçtiğinde ya da bu repoyu ilk kez bir makineye
+kopyaladığında yapman gereken tek şey:
 
-## Agent Hierarchy
+```bash
+git clone https://github.com/Erdemhan/Experimental-Skills.git
+cd Experimental-Skills
+./install-global.ps1        # Windows
+./install-global.sh         # Linux / macOS / cluster
+```
 
-This project uses a **3-tier agent hierarchy**. Select the appropriate agent for your scenario:
-
-| Scenario | Agent |
-|---|---|
-| New project setup / major feature / architectural decisions | `@architect` |
-| Module design / function specification planning | `@module-planner` |
-| Single function implementation & unit test generation | `@worker-coder` |
-| Failed unit test debugging (Tier 2 escalation) | `@unit-tester` |
-| Cross-module integration testing & contract verification | `@integration-verifier` |
-| Long-running experiment execution, sweep tracking & monitoring | `@experiment-runner` |
-| Academic writing, LaTeX formatting & BibTeX compilation | `@paper-writer` |
-| Session startup, context sync & state report | `@context-manager` |
-
-### Golden Rule
-> Architect never writes code. Worker never makes design decisions. Every agent operates strictly within its layer.
+Ardından bir kereye mahsus MCP sunucu kaydı (`claude mcp add -s user ...` —
+script sonunda tam komutları basar). Detay ve yeni-proje akışı için
+`NEW-PROJECT.md`'ye bak.
 
 ---
 
-## Communication & Approval Rules (Plan-First vs. Autonomous Execution)
-- **Design & Functionality Level (`@architect`, `@module-planner`, `@paper-writer`) — PLAN-FIRST REQUIRED**:
-  - When designing a new feature, architectural change, or function spec, **the plan must first be explained to the user and explicit approval requested**.
-  - No design files (`module_spec` or `FunctionSpec`) or paper structures are finalized until the user explicitly approves (e.g., "approved", "proceed", "apply").
-- **Implementation & Test Level (`@worker-coder`, `@unit-tester`, `@integration-verifier`, `@experiment-runner`) — AUTONOMOUS EXECUTION**:
-  - Once the user approves the spec/design, the execution layer operates **autonomously**.
-  - `worker-coder` and `unit-tester` execute unit tests, 3x retry cycles, and code fixes **autonomously without stopping for user approval at every step**.
-  - Escalation to the user occurs ONLY when all retries are exhausted, when a functionality/spec change is required, or when a Type B/C research bug impact is identified.
+## Bu Repo Üzerinde Çalışırken (Claude'a not)
 
----
+- **Kaynak `_global/`'dir, `~/.claude` değil.** Hook, ajan, kural değişikliği
+  hep `_global/` altında yapılır; `~/.claude`'a asla elle yazılmaz — oradaki
+  her şey bir sonraki `install-global` çalıştırmasında ezilir.
+- **Şablonlar makineden bağımsız olmalı.** `_global/settings.json` ve
+  `_global/settings.linux.json` içinde gerçek bir kullanıcı adı ya da mutlak
+  yol GÖRMEMELİSİN — hook komutları `<CLAUDE_HOME>` yer tutucusu taşır, bunu
+  `install-global.ps1`/`.sh` kurulum anında gerçek yola çevirir. Bir template
+  dosyasında hardcoded `C:/Users/...` ya da `/home/...` görürsen bu bir bug'dır
+  (bir kere oldu — bkz. commit geçmişi).
+- **`_new-project/CLAUDE.md`** yeni proje şablonunun tek kaynağıdır; kurulum
+  scriptleri onu `~/.claude/templates/PROJECT_CLAUDE.md` olarak kopyalar.
+  İçeriği burada değil, orada değiştir.
+- Değişiklik yaptıktan sonra `install-global.ps1 -VerifyOnly` (ya da eşdeğer
+  `.sh` doğrulaması) ile hook'ların hâlâ çalıştığını doğrula.
 
-## Coding & Debugging Rules
-- Never write code without a spec.
-- **🚫 Speculative Debugging Prohibited (Empirical Evidence Required)**:
-  - No agent (`worker-coder`, `unit-tester`, `architect`) may make code changes or hypothesize solutions without first reading the full log file, `traceback` output, or `pytest` `stderr` to **empirically verify the root cause**.
-  - Every code modification MUST be justified by an explicit error log or a failing test.
-- Every function requires a corresponding unit test before completion.
-- Pull requests / commits are not opened until tests pass.
-- **Git & .gitignore Check**: Always check `.gitignore` (via `git check-ignore` or filtering `git status`) before staging (`git add`) or committing (`git commit`). Never attempt to stage, commit, or process files ignored by `.gitignore`.
-- **Research Code Debugging (Critical)**:
-  - When fixing a bug in an academic research project/code, **the `@research-debug` skill MUST be invoked first**.
-  - **Academic Integrity Boundary**: Fixes must not introduce data leakage or violate theoretical assumptions.
-  - **Goal Distortion Prevention**: Bug fixes must not alter the test hypothesis (`hypothesis-framing`) or distort fair comparison baselines (`fair-comparison`).
-  - Classify bugs into Type A (isolated software), Type B (result-altering), or Type C (methodology-breaking).
-  - Type B and C bugs require assessing previous results and specifying `BUG-IMPACT` in commit messages before modifying code.
-- **📐 Formal Standards & Latest Stable Version Rule**:
-  - **Formal Methodology**: When implementing algorithms, mathematical models, or architectures, ad-hoc, informal, or hacky shortcuts are strictly prohibited. Agents MUST strictly adhere to the most formal, mathematically rigorous standards from peer-reviewed literature and official specifications.
-  - **Latest Stable Versions**: Deprecated APIs, obsolete syntax, or legacy package patterns (e.g. legacy Gym instead of `gymnasium`, outdated PyTorch autograd patterns instead of `torch.amp` / `torch.compile`, deprecated NumPy scalar types) are forbidden. Agents MUST target the latest stable releases and official current API specifications.
-- **⚡ Token Budgeting & Context Isolation Rule**:
-  - **Subagent Context Isolation**: Subagents (`worker-coder`, `unit-tester`) MUST be invoked with minimal isolated context — the `FunctionSpec` JSON, the error traceback, and the relevant AST class definitions only — rather than dumping full conversation history.
-  - **Log Pruning**: Never read full 1000-line test logs or training outputs. Use `grep`/`tail` patterns to extract ONLY the exact failure traceback lines.
-  - **AST Chunk Viewing & Targeted Edits**: Full file viewing for files > 300 lines is forbidden when making a local change. Use precise `StartLine`/`EndLine` ranges, and prefer non-contiguous multi-edit operations over rewriting whole files.
-  - **Checklist**: Is full-file viewing avoided for files > 300 lines? Are tracebacks extracted via minimal line ranges instead of full logs? Are subagent prompts constrained strictly to `FunctionSpec` and target snippets?
-- **🔁 Self-Consistency & Cross-Agent Critique Rule**:
-  - **Critique Isolation**: The verifying agent MUST act as an independent reviewer and question the generator agent's assumptions rather than confirming them. A verifier that agrees by default provides no signal.
-  - **Edge-Case & Boundary Audit**: Before any implementation is declared `Done`, verify zero values, NaN/Inf bounds, empty collections, out-of-bounds indices, and disconnection/timeout states.
-  - **Self-Correction Protocol**: If the verifier finds a logic flaw or spec mismatch, control returns to `worker-coder` with an explicit critique report — never straight to user sign-off.
-  - **Verification Audit Matrix**:
-
-    | Category | Check Item | Action on Failure |
-    |---|---|---|
-    | Contract | Does output type match the `FunctionSpec` type hints exactly? | Reject code, re-specify |
-    | Boundary | Are 0, None, NaN, Inf handled and verified? | Add boundary guard clause |
-    | Concurrency | Are thread synchronisation and lock leaks audited? | Enforce explicit lock release |
-- Every function must have a `FunctionSpec` JSON before implementation.
-- Code without unit tests is NEVER considered `Done`.
-- Type annotations (type hints) are mandatory.
-- Docstring format: Google style.
-
----
-
-## Academic Research Rules
-- Every claim must be supported by citations — unreferenced claims are rejected.
-- **Formulation & Parameters Registry Rule (`FORMULATION.md`)**:
-  - Academic equations, symbols, explanations, and parameter sources are maintained in `.claude/context/FORMULATION.md` (or `.agents/context/FORMULATION.md`).
-  - Agents MUST dynamically resolve `FORMULATION.md` across both `.claude/context/` and `.agents/context/` locations to ensure full cross-platform compatibility between Claude Code and Antigravity IDE.
-  - This file is **User-Locked**; NO AGENT may modify `FORMULATION.md` content, equations, or parameter values without explicit, direct user approval.
-  - If code conflicts with `FORMULATION.md`, the code must be fixed; the registry remains untouched.
-- **🌐 Heterogeneous Environment Awareness**:
-  - Agents must recognize that the development machine (local OS) and the experiment execution server/cluster (HPC/GPU cluster) may have different hardware (GPU/CPU/RAM), OS (Windows/Linux), CUDA versions, or library dependencies.
-  - "Works on my local machine" is an invalid assumption. Paths must use dynamic resolution (`pathlib.Path`, `os.path`) and device checks (`torch.cuda.is_available()`); hardcoded OS/hardware assumptions are forbidden.
-- Comparative studies MUST activate the `@fair-comparison` skill.
-- Experimental setup MUST activate the `@empirical-rigor` skill.
-- Numerical result interpretation MUST activate the `@statistical-validity` skill.
-
----
-
-## Task & Context Tracking
-- `context.db` (SQLite) is queried at session startup via `@context-manager` or `python .claude/hooks/context_db.py summary`.
-- **Session Startup & Auto-Setup**: At session initialization, `@context-manager` automatically checks if `context.db` exists (running `python .claude/hooks/context_db.py init` if missing) and, when the `codebase-memory-mcp` server is registered, checks its index status and triggers repository indexing if uninitialized.
-- `ARCHITECTURE.md` is updated after every architectural decision.
-- `@context-manager` runs automatically at session initialization.
-
----
-
-## Security
-- Destructive commands (`rm -rf`, disk format, fork bomb, force pushing to main/master) are blocked by the `security_gate.py` hook.
+Ajan hiyerarşisi, plan-first/otonom yürütme kuralları, kodlama standartları ve
+akademik kurallar için: `_global/CLAUDE.md` (bu, kurulunca `~/.claude/CLAUDE.md`
+olur ve gerçekten yürürlükte olan metindir).

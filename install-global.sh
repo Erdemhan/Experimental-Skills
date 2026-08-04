@@ -20,6 +20,32 @@ echo "Kaynak : $SRC"
 echo "Hedef  : $DST"
 echo
 
+# HPC/cluster ortamlarında `python3` PATH'te olmayabilir (conda env, module
+# load vb.) — Windows tarafındaki Resolve-Python ile aynı mantık: adayı
+# gerçekten çalıştırıp sys.executable'ı okuyoruz, PATH'te görünmesine güvenmiyoruz.
+resolve_python() {
+  local candidate exe
+  for candidate in python3 python; do
+    if command -v "$candidate" >/dev/null 2>&1; then
+      exe="$("$candidate" -c 'import sys; print(sys.executable)' 2>/dev/null || true)"
+      if [[ -n "$exe" && -x "$exe" ]]; then
+        echo "$exe"
+        return 0
+      fi
+    fi
+  done
+  return 1
+}
+
+echo "Python yorumlayıcısı aranıyor..."
+PYEXE="$(resolve_python || true)"
+if [[ -z "$PYEXE" ]]; then
+  echo "  [!] Çalışan Python bulunamadı. Hook'lar çalışmaz." >&2
+else
+  echo "  [OK] $PYEXE"
+fi
+echo
+
 install_item() {
   local from="$1" to="$2" label="$3"
   if [[ -e "$to" ]]; then
@@ -52,6 +78,39 @@ find "$DST" -type d -name '__pycache__' -prune -exec rm -rf {} + 2>/dev/null || 
 
 chmod +x "$DST"/hooks/*.py 2>/dev/null || true
 chmod +x "$DST"/scripts/*.py 2>/dev/null || true
+
+# settings.json içindeki <CLAUDE_HOME> yer tutucusunu ve çıplak 'python3'ü
+# bu makinedeki gerçek değerlerle sabitle (ps1 ile aynı sözleşme).
+if [[ -n "$PYEXE" ]]; then
+  "$PYEXE" - "$DST/settings.json" "$DST" "$PYEXE" <<'PYEOF'
+import json
+import sys
+
+path, claude_home, py_exe = sys.argv[1], sys.argv[2], sys.argv[3]
+with open(path, encoding="utf-8") as f:
+    cfg = json.load(f)
+
+patched = 0
+for event in ("PreToolUse", "PostToolUse"):
+    for matcher in cfg.get("hooks", {}).get(event, []):
+        for h in matcher.get("hooks", []):
+            original = h.get("command", "")
+            cmd = original.replace("<CLAUDE_HOME>", claude_home)
+            if cmd.startswith("python3 ") or cmd.startswith("python "):
+                cmd = py_exe + " " + cmd.split(" ", 1)[1]
+            if cmd != original:
+                patched += 1
+            h["command"] = cmd
+
+with open(path, "w", encoding="utf-8") as f:
+    json.dump(cfg, f, indent=2, ensure_ascii=False)
+    f.write("\n")
+
+print(f"settings.json: {patched} hook komutu guncellendi ({py_exe}).")
+PYEOF
+else
+  echo "  [!] Python bulunamadigi icin settings.json icindeki <CLAUDE_HOME> cozumlenemedi." >&2
+fi
 
 echo "Kurulum tamam."
 echo
