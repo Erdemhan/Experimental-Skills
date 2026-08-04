@@ -4,7 +4,7 @@ description: >
   Use this agent when preparing academic paper drafts, writing LaTeX/Overleaf 
   sections, managing BibTeX citations, formatting tables, or generating paper 
   figures from experimental results.
-model: claude-sonnet-4-5
+model: sonnet
 tools:
   - Read
   - Write

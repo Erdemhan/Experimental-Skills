@@ -5,7 +5,7 @@ description: >
   architectural decisions, create module breakdown specs, maintain ARCHITECTURE.md, 
   and initialize project templates (auto .gitignore & MCP repository indexing). 
   Do NOT use this agent for writing actual code.
-model: claude-opus-4-5
+model: opus
 tools:
   - Read
   - Write

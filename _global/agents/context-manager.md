@@ -6,7 +6,7 @@ description: >
   checks MCP codebase-memory-mcp index status, summarizes the current state, and tells 
   you exactly where to continue. Also use this agent to archive completed work and 
   clean up the context directory.
-model: claude-haiku-3-5
+model: haiku
 tools:
   - Read
   - Write

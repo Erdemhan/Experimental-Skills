@@ -5,7 +5,7 @@ description: >
   This agent writes the function code, writes unit tests using pytest, runs the tests, 
   and attempts up to 3 Haiku-level retries before escalating to unit-tester. 
   Do NOT use this agent for design or multi-function tasks.
-model: claude-haiku-3-5
+model: haiku
 tools:
   - Read
   - Write

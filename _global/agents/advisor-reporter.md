@@ -4,7 +4,7 @@ description: >
   Use this agent when preparing academic progress reports, weekly briefings, 
   milestone updates, or experimental deep-dive reports for an academic advisor 
   or supervisor who is not involved in day-to-day code implementations.
-model: claude-sonnet-4-5
+model: sonnet
 tools:
   - Read
   - Write

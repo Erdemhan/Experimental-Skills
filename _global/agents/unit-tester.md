@@ -5,7 +5,7 @@ description: >
   This agent receives the function implementation, failing tests, and error output, 
   attempts up to 3 Sonnet-level fixes, and produces a fix or escalates to the USER 
   if all 3 attempts also fail. Also use for complex test design requiring mocking/fixtures.
-model: claude-sonnet-4-5
+model: sonnet
 tools:
   - Read
   - Write

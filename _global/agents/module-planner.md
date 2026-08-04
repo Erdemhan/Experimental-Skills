@@ -7,7 +7,7 @@ description: >
   type contracts, edge cases, and test cases, then delegates each function to the 
   worker-coder agent. Do NOT use this agent for architectural decisions or writing 
   actual code.
-model: claude-sonnet-4-5
+model: sonnet
 tools:
   - Read
   - Write

@@ -5,7 +5,7 @@ description: >
   individually. It runs cross-module integration tests, checks interface contracts,
   verifies end-to-end flows, and reports compatibility issues. Call this agent 
   when a full module or a set of related modules is complete.
-model: claude-sonnet-4-5
+model: sonnet
 tools:
   - Read
   - Bash

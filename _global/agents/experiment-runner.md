@@ -5,7 +5,7 @@ description: >
   simulation sweeps, model benchmarks). It launches background runs, silently monitors 
   log files without terminal polling, handles early stopping or NaN detection, 
   and summarizes experiment metrics upon completion.
-model: claude-sonnet-4-5
+model: sonnet
 tools:
   - Read
   - Bash
