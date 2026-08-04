@@ -95,6 +95,23 @@ içindeki `Invoke-Verification` fonksiyonu, testler platform bağımsız).
 Hiçbir parametre vermeden çalıştırmak güvenlidir: var olan hiçbir dosyayı
 ezmez, sadece eksik olanları (varsa) tamamlar.
 
+### `~/.claude/scripts/check_interfaces.py` (proje kök dizininde çalıştırılır)
+
+`@integration-verifier` tarafından otomatik çağrılır — elle çalıştırmana genelde
+gerek yok. `.claude/context/function-specs/` altındaki her `FunctionSpec`'in
+`signature` alanını, `ast` ile karşılık gelen Python dosyasındaki gerçek
+fonksiyon imzasıyla karşılaştırır. Sıfır LLM token — saf statik analiz.
+
+| Parametre | İşlev |
+|---|---|
+| *(parametresiz)* | `.claude/context/function-specs/` altını tarar. |
+| `--specs-dir <yol>` | Farklı bir spec dizini belirt (varsayılan: `.claude/context/function-specs`). |
+| `--json` | Metin yerine makine-okunur JSON çıktısı ver. |
+
+Çıkış kodu: hepsi eşleşiyorsa `0`, en az bir `SIGNATURE_MISMATCH` / `MISSING_FUNCTION`
+/ `MISSING_FILE` varsa `1`. Spec dizini yoksa (henüz FunctionSpec üretilmemişse)
+sessizce `0` döner — hata değil, kontrol edilecek bir şey yok demektir.
+
 ---
 
 ## Ajan Hiyerarşisi ve Çalışma Prensipleri
@@ -232,7 +249,7 @@ Experimental-Skills/
 │   ├── settings.linux.json        ← Aynısı, Linux/macOS varyantı
 │   ├── agents/                    ← 9 ajan tanımı (architect.md, worker-coder.md, ...)
 │   ├── hooks/                     ← 6 lifecycle hook scripti
-│   ├── scripts/                   ← startup_project.py
+│   ├── scripts/                   ← startup_project.py, check_interfaces.py
 │   ├── skills/                    ← 29 skill (her biri kendi SKILL.md'si ile)
 │   └── templates/                 ← .gitignore, FORMULATION.md, pre-commit, git-hooks/
 └── _new-project/

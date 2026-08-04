@@ -136,7 +136,7 @@ function Invoke-Verification {
         'hooks\auto_format.py', 'hooks\test_watcher.py',
         'hooks\context_db.py', 'hooks\sync_agents_md.py',
         'templates\FORMULATION.md', 'templates\PROJECT_CLAUDE.md',
-        'scripts\startup_project.py'
+        'scripts\startup_project.py', 'scripts\check_interfaces.py'
     )
     $missing = $expected | Where-Object { -not (Test-Path (Join-Path $Target $_)) }
     if ($missing) {
@@ -251,7 +251,7 @@ Install-Entry -From (Join-Path $Source 'CLAUDE.md')     -To (Join-Path $Target '
 Install-Entry -From (Join-Path $Source 'agents')        -To (Join-Path $Target 'agents')     -Label 'agents (9 ajan)'
 Install-Entry -From (Join-Path $Source 'hooks')         -To (Join-Path $Target 'hooks')      -Label 'hooks (6 script)'
 Install-Entry -From (Join-Path $Source 'templates')     -To (Join-Path $Target 'templates')  -Label 'templates'
-Install-Entry -From (Join-Path $Source 'scripts')       -To (Join-Path $Target 'scripts')    -Label 'scripts (startup_project.py)'
+Install-Entry -From (Join-Path $Source 'scripts')       -To (Join-Path $Target 'scripts')    -Label 'scripts (startup_project.py, check_interfaces.py)'
 Install-Entry -From (Join-Path $Source 'skills')        -To (Join-Path $Target 'skills')     -Label 'skills (29 akademik/RL/muhendislik skill)'
 Install-Entry -From (Join-Path $PSScriptRoot '_new-project\CLAUDE.md') -To (Join-Path $Target 'templates\PROJECT_CLAUDE.md') -Label 'templates/PROJECT_CLAUDE.md (yeni proje sablonu)'
 

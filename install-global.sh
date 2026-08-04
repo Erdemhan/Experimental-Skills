@@ -64,7 +64,7 @@ install_item "$SRC/CLAUDE.md"           "$DST/CLAUDE.md"     "CLAUDE.md"
 install_item "$SRC/agents"              "$DST/agents"        "agents/ (9 ajan)"
 install_item "$SRC/hooks"               "$DST/hooks"         "hooks/ (6 script)"
 install_item "$SRC/templates"           "$DST/templates"     "templates/"
-install_item "$SRC/scripts"             "$DST/scripts"       "scripts/ (startup_project.py)"
+install_item "$SRC/scripts"             "$DST/scripts"       "scripts/ (startup_project.py, check_interfaces.py)"
 install_item "$SRC/skills"              "$DST/skills"        "skills/ (29 akademik/RL/mühendislik skill)"
 install_item "$(dirname "$SRC")/_new-project/CLAUDE.md" "$DST/templates/PROJECT_CLAUDE.md" "templates/PROJECT_CLAUDE.md (yeni proje şablonu)"
 
