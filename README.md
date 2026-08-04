@@ -59,6 +59,42 @@ görsün.
 
 ---
 
+## Script Parametreleri
+
+### `install-global.ps1` (Windows)
+
+| Parametre | İşlev |
+|---|---|
+| *(parametresiz)* | Kurar; var olan dosyaları `.bak-<zaman damgası>` olarak yedekler. |
+| `-DryRun` | Hiçbir dosyaya dokunmadan ne yapacağını gösterir. |
+| `-VerifyOnly` | Kurmaz; sadece mevcut kurulumu 6 kontrolle test eder (security_gate, context_sync opt-in guard, settings.json geçerliliği, yorumlayıcı + `<CLAUDE_HOME>` çözümü, 13 beklenen dosya). |
+
+### `install-global.sh` (Linux / macOS / cluster)
+
+| Parametre | İşlev |
+|---|---|
+| *(parametresiz)* | Kurar; var olan dosyaları `.bak-<zaman damgası>` olarak yedekler. |
+| `--dry-run` | Hiçbir dosyaya dokunmadan ne yapacağını gösterir. |
+
+`-VerifyOnly` eşdeğeri `.sh` tarafında henüz yok — kurulumu doğrulamak için
+`-VerifyOnly`'nin yaptığı testleri elle çalıştırman gerekir (bkz. `install-global.ps1`
+içindeki `Invoke-Verification` fonksiyonu, testler platform bağımsız).
+
+### `~/.claude/scripts/startup_project.py` (proje kök dizininde çalıştırılır)
+
+| Parametre | İşlev |
+|---|---|
+| `--name "Proje Adı"` | `CLAUDE.md` başlığına yazılacak proje adı. Verilmezse bulunduğun klasörün adı kullanılır. |
+| `--with-formulation` | `FORMULATION.md` şablonunu da `.claude/context/`'e kopyalar (denklem/parametre içeren projeler için). Verilmezse atlanır. |
+| `--antigravity` | `sync_agents_md.py`'yi çalıştırıp `CLAUDE.md`'yi `.agents/AGENTS.md` olarak aynalar (Antigravity IDE uyumluluğu). |
+| `--force` | Var olan dosyaların (`CLAUDE.md`, `.gitignore`, `FORMULATION.md`) üzerine yazar — önce `.bak-<zaman damgası>` olarak yedekler. Varsayılan davranış var olana hiç dokunmamaktır. |
+| `--dry-run` | Hiçbir dosyaya dokunmadan ne yapacağını gösterir. |
+
+Hiçbir parametre vermeden çalıştırmak güvenlidir: var olan hiçbir dosyayı
+ezmez, sadece eksik olanları (varsa) tamamlar.
+
+---
+
 ## Ajan Hiyerarşisi ve Çalışma Prensipleri
 
 Sistem üç katmanda tanımlanmış 9 uzman ajandan oluşur:
