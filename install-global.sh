@@ -38,6 +38,8 @@ install_item "$SRC/CLAUDE.md"           "$DST/CLAUDE.md"     "CLAUDE.md"
 install_item "$SRC/agents"              "$DST/agents"        "agents/ (9 ajan)"
 install_item "$SRC/hooks"               "$DST/hooks"         "hooks/ (6 script)"
 install_item "$SRC/templates"           "$DST/templates"     "templates/"
+install_item "$SRC/scripts"             "$DST/scripts"       "scripts/ (startup_project.py)"
+install_item "$(dirname "$SRC")/_new-project/CLAUDE.md" "$DST/templates/PROJECT_CLAUDE.md" "templates/PROJECT_CLAUDE.md (yeni proje şablonu)"
 
 echo
 if (( DRY_RUN )); then
@@ -49,8 +51,14 @@ fi
 find "$DST" -type d -name '__pycache__' -prune -exec rm -rf {} + 2>/dev/null || true
 
 chmod +x "$DST"/hooks/*.py 2>/dev/null || true
+chmod +x "$DST"/scripts/*.py 2>/dev/null || true
 
 echo "Kurulum tamam."
+echo
+echo "Yeni bir proje başlatırken (proje kök dizininde):"
+echo "  python3 $DST/scripts/startup_project.py"
+echo '  # CLAUDE.md + .claude/context/ + .gitignore + git hook'"'"'larını tek seferde kurar.'
+echo '  # Seçenekler: --name "Proje Adı"  --with-formulation  --antigravity  --dry-run  --force'
 echo
 echo "MCP sunucuları settings.json'dan OKUNMUYOR. Bir kereye mahsus:"
 echo '  claude mcp add -s user memory -- npx -y @modelcontextprotocol/server-memory'

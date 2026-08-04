@@ -127,7 +127,8 @@ function Invoke-Verification {
         'hooks\security_gate.py', 'hooks\context_sync.py',
         'hooks\auto_format.py', 'hooks\test_watcher.py',
         'hooks\context_db.py', 'hooks\sync_agents_md.py',
-        'templates\FORMULATION.md'
+        'templates\FORMULATION.md', 'templates\PROJECT_CLAUDE.md',
+        'scripts\startup_project.py'
     )
     $missing = $expected | Where-Object { -not (Test-Path (Join-Path $Target $_)) }
     if ($missing) {
@@ -138,6 +139,11 @@ function Invoke-Verification {
         Write-Host "  [OK] Beklenen $($expected.Count) dosyanin tamami yerinde" -ForegroundColor Green
     }
 
+    Write-Host ''
+    Write-Host 'Yeni bir proje baslatirken (proje kok dizininde):' -ForegroundColor Yellow
+    Write-Host "  $PythonExe $Target\scripts\startup_project.py"
+    Write-Host '  # CLAUDE.md + .claude/context/ + .gitignore + git hook''larini tek seferde kurar.'
+    Write-Host '  # Secenekler: --name "Proje Adi"  --with-formulation  --antigravity  --dry-run  --force'
     Write-Host ''
     Write-Host 'MCP sunuculari settings.json uzerinden YUKLENMEZ.' -ForegroundColor Yellow
     Write-Host 'Bir kereye mahsus sunlari calistirin:' -ForegroundColor Yellow
@@ -223,6 +229,8 @@ Install-Entry -From (Join-Path $Source 'CLAUDE.md')     -To (Join-Path $Target '
 Install-Entry -From (Join-Path $Source 'agents')        -To (Join-Path $Target 'agents')     -Label 'agents (9 ajan)'
 Install-Entry -From (Join-Path $Source 'hooks')         -To (Join-Path $Target 'hooks')      -Label 'hooks (6 script)'
 Install-Entry -From (Join-Path $Source 'templates')     -To (Join-Path $Target 'templates')  -Label 'templates'
+Install-Entry -From (Join-Path $Source 'scripts')       -To (Join-Path $Target 'scripts')    -Label 'scripts (startup_project.py)'
+Install-Entry -From (Join-Path $PSScriptRoot '_new-project\CLAUDE.md') -To (Join-Path $Target 'templates\PROJECT_CLAUDE.md') -Label 'templates/PROJECT_CLAUDE.md (yeni proje sablonu)'
 
 Write-Host ''
 

@@ -14,17 +14,56 @@ eklemen gereken **harici şeyler** aşağıdakilerden ibaret.
 | **4 hook** (security_gate, auto_format, test_watcher, context_sync) | `~/.claude/settings.json` |
 | **İzinler** (pytest, git, black, ruff, mypy, latexmk) | `~/.claude/settings.json` — izinler katmanlar arası **birleşir** |
 | **Genel kurallar** (ajan hiyerarşisi, kodlama standartları, token bütçesi, akademik kurallar) | `~/.claude/CLAUDE.md` |
-| **Template'ler** (.gitignore, pre-commit, git-hooks, FORMULATION iskeleti) | `~/.claude/templates/` |
+| **Template'ler** (.gitignore, pre-commit, git-hooks, FORMULATION, PROJECT_CLAUDE iskeleti) | `~/.claude/templates/` |
+| **Bootstrap scripti** (`startup_project.py`) | `~/.claude/scripts/` |
 | **MCP sunucuları** (memory, sequential-thinking, codebase-memory-mcp) | `claude mcp add -s user` ile bir kere eklenir |
 
 ---
 
-## Yeni projede yapılacaklar — 4 adım, ~2 dakika
+## Hızlı başlangıç — tek komut
+
+Aşağıdaki 4 adımın hepsini `startup_project.py` otomatik yapar. Proje kök
+dizininde (git deposu zaten `git init` edilmiş olsun, script kendisi init
+etmez):
+
+```bash
+python3 ~/.claude/scripts/startup_project.py
+```
+
+Ne yaptığı: `CLAUDE.md`'yi şablondan üretir (proje adını klasör adından
+alır), `.claude/context/` dizinini ve `context.db`'yi kurar, `.gitignore`'u
+kopyalar, `.git/` varsa git hook'larını (`commit-msg`, `pre-commit`,
+`pre-push`) yükler. Var olan bir dosyayı **asla sessizce ezmez** — zaten
+oradaysa dokunmadan atlar.
+
+Sık kullanılan seçenekler:
+
+```bash
+python3 ~/.claude/scripts/startup_project.py --name "MARL Reward Shaping"
+python3 ~/.claude/scripts/startup_project.py --with-formulation   # denklem içeren proje
+python3 ~/.claude/scripts/startup_project.py --antigravity        # .agents/AGENTS.md de üret
+python3 ~/.claude/scripts/startup_project.py --dry-run            # ne yapacağını göster, dokunma
+python3 ~/.claude/scripts/startup_project.py --force              # var olanları yedekleyip üzerine yaz
+```
+
+Windows'ta aynısı, `install-global.ps1` çalıştırdığında bulduğu Python yolu ile:
+
+```powershell
+python $env:USERPROFILE\.claude\scripts\startup_project.py
+```
+
+Aşağıdaki bölümler scriptin arka planda tek tek ne yaptığının dökümü —
+elle yapmak istersen ya da script bir adımı atladıysa (örn. şablon eksikse)
+buraya bak.
+
+---
+
+## Yeni projede yapılacaklar — 4 adım, ~2 dakika (elle / referans)
 
 ### 1. Proje CLAUDE.md'sini yaz
 
 ```bash
-cp ~/.claude/templates/../../_new-project/CLAUDE.md ./CLAUDE.md   # ya da elle
+cp ~/.claude/templates/PROJECT_CLAUDE.md ./CLAUDE.md   # ya da elle
 ```
 
 Sadece **bu projeye özgü** olanları doldur: araştırma sorusu, ortam/algoritma/sürümler,
