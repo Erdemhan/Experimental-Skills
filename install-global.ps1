@@ -147,6 +147,20 @@ function Invoke-Verification {
         Write-Host "  [OK] Beklenen $($expected.Count) dosyanin tamami yerinde" -ForegroundColor Green
     }
 
+    $skillsDir = Join-Path $Target 'skills'
+    if (Test-Path $skillsDir) {
+        $skillCount = @(Get-ChildItem -Path $skillsDir -Directory -ErrorAction SilentlyContinue | Where-Object { Test-Path (Join-Path $_.FullName 'SKILL.md') }).Count
+        if ($skillCount -ge 29) {
+            Write-Host "  [OK] $skillCount skill kurulu (SKILL.md ile)" -ForegroundColor Green
+        }
+        else {
+            Write-Host "  [!] Sadece $skillCount skill bulundu, 29 bekleniyordu" -ForegroundColor Red
+        }
+    }
+    else {
+        Write-Host '  [!] skills\ dizini kurulmamis' -ForegroundColor Red
+    }
+
     Write-Host ''
     Write-Host 'Yeni bir proje baslatirken (proje kok dizininde):' -ForegroundColor Yellow
     Write-Host "  $PythonExe $Target\scripts\startup_project.py"
@@ -238,6 +252,7 @@ Install-Entry -From (Join-Path $Source 'agents')        -To (Join-Path $Target '
 Install-Entry -From (Join-Path $Source 'hooks')         -To (Join-Path $Target 'hooks')      -Label 'hooks (6 script)'
 Install-Entry -From (Join-Path $Source 'templates')     -To (Join-Path $Target 'templates')  -Label 'templates'
 Install-Entry -From (Join-Path $Source 'scripts')       -To (Join-Path $Target 'scripts')    -Label 'scripts (startup_project.py)'
+Install-Entry -From (Join-Path $Source 'skills')        -To (Join-Path $Target 'skills')     -Label 'skills (29 akademik/RL/muhendislik skill)'
 Install-Entry -From (Join-Path $PSScriptRoot '_new-project\CLAUDE.md') -To (Join-Path $Target 'templates\PROJECT_CLAUDE.md') -Label 'templates/PROJECT_CLAUDE.md (yeni proje sablonu)'
 
 Write-Host ''

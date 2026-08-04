@@ -6,9 +6,11 @@ makinelerine** taşımanı sağlayan kaynak paket. İçindeki her şey `~/.claud
 altına kurulur ve kurulduğu andan itibaren **açtığın her projede** otomatik
 geçerli olur — proje proje `.claude/` klasörü kopyalamana gerek kalmaz.
 
-**Skill'ler bu repoda değil.** 40+ akademik/RL/mühendislik skill'i artık Claude
-hesabında (Cowork / claude.ai) kullanıcı seviyesinde tutuluyor — bu repo sadece
-ajan tanımlarını, hook'ları, izinleri ve şablonları taşıyor.
+**29 akademik/RL/mühendislik skill'i de bu repoda.** `_global/skills/` altında
+duruyorlar ve kurulum onları `~/.claude/skills/` altına kopyalıyor — Claude
+Code bunları dosya sisteminden otomatik keşfediyor, ayrıca bir kayıt/`claude
+mcp add` gibi bir adım gerekmiyor. Yani repoyu klonlayan biri kurulumdan hemen
+sonra hem 9 ajana hem tüm skill'lere sahip oluyor.
 
 ---
 
@@ -38,7 +40,7 @@ claude mcp list   # üçü de "Connected" görünmeli
 ```
 
 Bundan sonra herhangi bir klasörde `claude` açtığında 9 ajan (`@architect`,
-`@worker-coder`, ...) ve hesabındaki skill'ler hazır.
+`@worker-coder`, ...) ve 29 skill hazır.
 
 ---
 
@@ -166,6 +168,29 @@ Tam kural seti: `_global/CLAUDE.md` (kurulunca `~/.claude/CLAUDE.md` olur).
 
 ---
 
+## Skill'ler (`~/.claude/skills/`, 29 adet)
+
+Dosya sistemi tabanlı — Claude Code her birini `SKILL.md`'sinden otomatik
+keşfeder, ayrı bir kayıt adımı yok. Konuya göre gruplanmış:
+
+**Akademik & metodoloji** (12): `academic-integrity`, `academic-peer-review`,
+`advisor-report-generator`, `dataset-documentation`, `empirical-rigor`,
+`fair-comparison`, `hypothesis-framing`, `latex-bibtex-manager`,
+`literature-review`, `paper-structure`, `replication-package`, `statistical-validity`
+
+**RL & simülasyon** (11): `pytorch-training`, `ray-rllib`, `rl-environment-design`,
+`rl-experiment-tracking`, `rl-marl-design`, `rl-offline-dataset`,
+`rl-paper-implementation`, `rl-reward-shaping`, `rl-security-review`,
+`simulation-experiment-design`, `wandb-mlflow-api`
+
+**Köprü / mühendislik** (6): `function-spec-writer`, `git-engineering`,
+`git-research`, `paper-to-reproducible-code`, `research-debug`, `result-analysis-pipeline`
+
+Her skill'in tetikleyicisi kendi `SKILL.md`'sindeki `description` alanında —
+detay için ilgili dosyaya bak, burada tekrar edilmiyor.
+
+---
+
 ## MCP Sunucuları
 
 `settings.json` üzerinden yüklenmiyor — makine başına bir kere `claude mcp add -s user` ile kaydediliyor:
@@ -208,6 +233,7 @@ Experimental-Skills/
 │   ├── agents/                    ← 9 ajan tanımı (architect.md, worker-coder.md, ...)
 │   ├── hooks/                     ← 6 lifecycle hook scripti
 │   ├── scripts/                   ← startup_project.py
+│   ├── skills/                    ← 29 skill (her biri kendi SKILL.md'si ile)
 │   └── templates/                 ← .gitignore, FORMULATION.md, pre-commit, git-hooks/
 └── _new-project/
     └── CLAUDE.md                  ← Yeni proje CLAUDE.md şablonunun tek kaynağı

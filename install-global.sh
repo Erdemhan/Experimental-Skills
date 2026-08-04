@@ -65,6 +65,7 @@ install_item "$SRC/agents"              "$DST/agents"        "agents/ (9 ajan)"
 install_item "$SRC/hooks"               "$DST/hooks"         "hooks/ (6 script)"
 install_item "$SRC/templates"           "$DST/templates"     "templates/"
 install_item "$SRC/scripts"             "$DST/scripts"       "scripts/ (startup_project.py)"
+install_item "$SRC/skills"              "$DST/skills"        "skills/ (29 akademik/RL/mühendislik skill)"
 install_item "$(dirname "$SRC")/_new-project/CLAUDE.md" "$DST/templates/PROJECT_CLAUDE.md" "templates/PROJECT_CLAUDE.md (yeni proje şablonu)"
 
 echo
@@ -110,6 +111,13 @@ print(f"settings.json: {patched} hook komutu guncellendi ({py_exe}).")
 PYEOF
 else
   echo "  [!] Python bulunamadigi icin settings.json icindeki <CLAUDE_HOME> cozumlenemedi." >&2
+fi
+
+skill_count=$(find "$DST/skills" -mindepth 1 -maxdepth 1 -type d -exec test -e '{}/SKILL.md' \; -print 2>/dev/null | wc -l)
+if [[ "$skill_count" -ge 29 ]]; then
+  echo "  [OK] $skill_count skill kurulu (SKILL.md ile)"
+else
+  echo "  [!] Sadece $skill_count skill bulundu, 29 bekleniyordu" >&2
 fi
 
 echo "Kurulum tamam."
