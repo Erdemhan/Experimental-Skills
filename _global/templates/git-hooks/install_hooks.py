@@ -3,11 +3,12 @@
 install_hooks.py — Git hook'larını otomatik yükler.
 
 Kullanım (proje kök dizininde):
-    python3 .claude/templates/git-hooks/install_hooks.py
+    python3 ~/.claude/templates/git-hooks/install_hooks.py
 
-Bu script .claude/templates/git-hooks/ içindeki tüm hook
-dosyalarını .git/hooks/ dizinine kopyalar ve çalıştırma
-iznini ayarlar.
+Bu script kendi bulunduğu dizindeki (~/.claude/templates/git-hooks/, nereden
+çağrıldığından bağımsız — __file__ üzerinden çözülür) tüm hook dosyalarını
+çalışılan projenin .git/hooks/ dizinine kopyalar ve çalıştırma iznini ayarlar.
+startup_project.py bunu otomatik çağırır; elle çalıştırmana gerek yok.
 """
 from __future__ import annotations
 
@@ -44,8 +45,10 @@ def install() -> None:
         dst.chmod(dst.stat().st_mode | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH)
         print(f"✅ Yüklendi: {hook}")
 
-    # .gitignore kontrolü ve otomatik kopyalama
-    gitignore_src = Path(".claude/templates/.gitignore")
+    # .gitignore kontrolü ve otomatik kopyalama (sablon ~/.claude/templates/
+    # altinda durur; startup_project.py normalde bunu zaten kopyalar, bu
+    # sadece install_hooks.py tek basina cagrildiginda devreye giren yedek).
+    gitignore_src = HOOKS_SRC.parent / ".gitignore"
     gitignore_dst = Path(".gitignore")
 
     if gitignore_src.exists() and not gitignore_dst.exists():

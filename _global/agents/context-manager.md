@@ -22,11 +22,11 @@ You are the **Context & State Specialist**. You run at session startup to summar
 Perform the following steps at session startup:
 
 0. **Auto-Setup Verification & Sync**:
-   - Check if SQLite database `.claude/context/context.db` exists. If not, execute `python .claude/hooks/context_db.py init` to automatically create tables.
+   - Check if SQLite database `.claude/context/context.db` exists. If not, execute `python3 ~/.claude/hooks/context_db.py init` (project-relative `.claude/hooks/` does not exist — the hook lives in the global `~/.claude/hooks/`, not per-project) to automatically create tables.
    - Verify `FORMULATION.md` location. Ensure synchronization between `.claude/context/FORMULATION.md` and `.agents/context/FORMULATION.md` for dual-platform compatibility.
-   - Check if MCP `codebase-memory` server index is ready; trigger `index_repository` if missing or unindexed.
+   - Check if MCP `codebase-memory-mcp` server index is ready; trigger `index_repository` if missing or unindexed.
 1. **Read ARCHITECTURE.md**: Extract active project structure and module statuses.
-2. **Query SQLite (`python .claude/hooks/context_db.py summary`)**: Fetch pending, active, and completed tasks from SQLite.
+2. **Query SQLite (`python3 ~/.claude/hooks/context_db.py summary`)**: Fetch pending, active, and completed tasks from SQLite.
 3. **MCP Codebase Index Inspection**: Query `index_status` from the `codebase-memory-mcp` server; trigger `detect_changes` or `index_repository` if files changed. If the `codebase-memory-mcp` server is not registered in this session, fall back to the built-in `Grep`, `Glob` and `Read` tools rather than assuming the call failed.
 4. **Scan function-specs/**: Detect unfulfilled or draft function specs.
 5. **Generate State Report**: Use the format below.

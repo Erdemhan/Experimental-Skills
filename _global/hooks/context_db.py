@@ -8,11 +8,12 @@ task-queue.json'un yerini alır. SQLite tercih sebebi:
 - ACID garantisi (yarım yazılan kayıt yok)
 - Basit: sıfır bağımlılık (stdlib sqlite3)
 
-Kullanım:
-    python3 .claude/hooks/context_db.py status
-    python3 .claude/hooks/context_db.py add-task <json>
-    python3 .claude/hooks/context_db.py complete <task_id>
-    python3 .claude/hooks/context_db.py summary
+Kullanım (proje kök dizininde — context.db her zaman cwd'ye göre .claude/context/
+altında yazılır, script kendisi ~/.claude/hooks/ altında yaşar):
+    python3 ~/.claude/hooks/context_db.py status
+    python3 ~/.claude/hooks/context_db.py add-task <json>
+    python3 ~/.claude/hooks/context_db.py complete <task_id>
+    python3 ~/.claude/hooks/context_db.py summary
 """
 from __future__ import annotations
 
