@@ -6,6 +6,27 @@ projenin kendi kökündeki `CLAUDE.md` dosyasına yazılır; ikisi birleşerek y
 
 ---
 
+## Language Rule (Dil Kuralı)
+
+**Kullanıcıyla doğrudan sohbet dışındaki HER ŞEY İngilizce yazılır.** Bu kural
+en üstte, açık ve istisnasız:
+
+- **Türkçe kalır**: sadece kullanıcıya doğrudan yazılan chat yanıtları (plan
+  açıklamaları, onay istekleri, ilerleme özetleri, hata bildirimleri).
+- **İngilizce olmalı**: kod, docstring, yorum satırları, commit mesajları,
+  `module_spec.json` / `FunctionSpec` JSON içerikleri, `ARCHITECTURE.md`,
+  ADR'ler, ajanlar arası eskalasyon/delegasyon raporları (örn. `TIER 1
+  ESCALATION REPORT`), `FORMULATION.md`, test isimleri ve dosya adları —
+  yani diske yazılan veya bir ajandan diğerine aktarılan HER ŞEY.
+- Bu dosyanın kendisi (global anayasa) Türkçe — bu, ajanların dosyaya
+  yazdığı çıktıyı Türkçeleştirmesi için bir gerekçe değildir. Talimatların
+  dili ile üretilen artefaktın dili birbirinden bağımsızdır.
+- Gerekçe: İngilizce teknik terimler daha kısa/net ve LLM'ler arası aktarımda
+  daha az token harcar; ayrıca kod tabanı gelecekte İngilizce konuşan biriyle
+  paylaşılabilir olmalı.
+
+---
+
 ## Agent Hierarchy
 
 Bu kurulum **3 katmanlı bir ajan hiyerarşisi** kullanır. Senaryoya uygun ajanı seç:
