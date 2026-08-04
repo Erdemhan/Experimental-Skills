@@ -169,17 +169,19 @@ Tam kural seti: `_global/CLAUDE.md` (kurulunca `~/.claude/CLAUDE.md` olur).
 
 ---
 
-## Lifecycle Hooks (6 script)
+## Lifecycle Hooks (7 script)
 
 `~/.claude/settings.json` içinde tanımlı, `~/.claude/hooks/` altında yaşayan
-6 Python script'i güvenliği, kod kalitesini ve oturum belleğini otonom yönetir:
+7 Python script'i güvenliği, kod kalitesini, token maliyetini ve oturum
+belleğini otonom yönetir:
 
 | Script | Hook Tipi | İşlevi |
 |---|---|---|
 | `security_gate.py` | `PreToolUse` | Yıkıcı komutları (`rm -rf`, disk format, fork bomb, main/master'a force push) engeller. Regex tabanlı bir "kaza freni" — saldırgan koruması değil. |
+| `pytest_compact.py` | `PreToolUse` | `pytest` çağrılarına (kullanıcı zaten `-v`/`--tb=` vermediyse) `-q --tb=short` ekler — context'e giren ham test çıktısını, gerçek hata/son frame'i kaybetmeden küçültür. Anthropic'in "reduce token usage" dokümantasyonundaki önerilen desen. |
 | `context_sync.py` | `PreToolUse` | Proje kökünde `.claude/context/` varsa aktif görev durumunu SQLite'tan okuyup hatırlatır; yoksa sessizce çıkar, hiçbir dosya yaratmaz (opt-in). |
 | `auto_format.py` | `PostToolUse` | Kaydedilen kod dosyalarını otomatik formatlar (`black`, `ruff`). |
-| `test_watcher.py` | `PostToolUse` | PyTest çıktısını parse edip başarısız testleri özetler. |
+| `test_watcher.py` | `PostToolUse` | PyTest çıktısını parse edip başarısız testleri özetler (`pytest_compact.py`'nin zaten küçülttüğü çıktının üstüne). |
 | `context_db.py` | CLI | SQLite WAL veritabanı (`context.db`) ile eşzamanlı, ACID garantili oturum/görev takibi. `init`, `summary`, `add-task`, `complete` komutları. |
 | `sync_agents_md.py` | CLI | Proje `CLAUDE.md`'sini `.agents/AGENTS.md` olarak aynalar (Antigravity IDE uyumluluğu). `ANTIGRAVITY_CONFIG` ortam değişkenini ya da `~/.gemini/config` varsayılanını kullanır — makineye sabit yol yazmaz. |
 

@@ -11,7 +11,7 @@ eklemen gereken **harici şeyler** aşağıdakilerden ibaret.
 |---|---|
 | **29 skill** (rl-*, academic, paper, git-research…) | `~/.claude/skills/` — dosya tabanlı, otomatik keşfedilir |
 | **9 ajan** (`@architect`, `@worker-coder`, …) | `~/.claude/agents/` |
-| **4 hook** (security_gate, auto_format, test_watcher, context_sync) | `~/.claude/settings.json` |
+| **5 aktif hook** (security_gate, pytest_compact, auto_format, test_watcher, context_sync) | `~/.claude/settings.json` |
 | **İzinler** (pytest, git, black, ruff, mypy, latexmk) | `~/.claude/settings.json` — izinler katmanlar arası **birleşir** |
 | **Genel kurallar** (ajan hiyerarşisi, kodlama standartları, token bütçesi, akademik kurallar) | `~/.claude/CLAUDE.md` |
 | **Template'ler** (.gitignore, pre-commit, git-hooks, FORMULATION, PROJECT_CLAUDE iskeleti) | `~/.claude/templates/` |

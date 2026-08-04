@@ -135,6 +135,7 @@ function Invoke-Verification {
         'hooks\security_gate.py', 'hooks\context_sync.py',
         'hooks\auto_format.py', 'hooks\test_watcher.py',
         'hooks\context_db.py', 'hooks\sync_agents_md.py',
+        'hooks\pytest_compact.py',
         'templates\FORMULATION.md', 'templates\PROJECT_CLAUDE.md',
         'scripts\startup_project.py', 'scripts\check_interfaces.py'
     )
@@ -249,7 +250,7 @@ if (-not (Test-Path $Target) -and -not $DryRun) {
 Install-Entry -From (Join-Path $Source 'settings.json') -To $SettingsPath                    -Label 'settings.json'
 Install-Entry -From (Join-Path $Source 'CLAUDE.md')     -To (Join-Path $Target 'CLAUDE.md')  -Label 'CLAUDE.md'
 Install-Entry -From (Join-Path $Source 'agents')        -To (Join-Path $Target 'agents')     -Label 'agents (9 ajan)'
-Install-Entry -From (Join-Path $Source 'hooks')         -To (Join-Path $Target 'hooks')      -Label 'hooks (6 script)'
+Install-Entry -From (Join-Path $Source 'hooks')         -To (Join-Path $Target 'hooks')      -Label 'hooks (7 script)'
 Install-Entry -From (Join-Path $Source 'templates')     -To (Join-Path $Target 'templates')  -Label 'templates'
 Install-Entry -From (Join-Path $Source 'scripts')       -To (Join-Path $Target 'scripts')    -Label 'scripts (startup_project.py, check_interfaces.py)'
 Install-Entry -From (Join-Path $Source 'skills')        -To (Join-Path $Target 'skills')     -Label 'skills (29 akademik/RL/muhendislik skill)'
